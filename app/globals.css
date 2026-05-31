@@ -1,0 +1,149 @@
+/* app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Custom properties ───────────────────────── */
+:root {
+  /* Warm amber brand accent */
+  --brand-primary: #d4791a;
+  --brand-glow: rgba(212, 121, 26, 0.4);
+
+  /* Background depth stack */
+  --bg-base: #0f0b09;
+  --bg-surface: #1a1210;
+  --bg-overlay: rgba(26, 18, 16, 0.85);
+
+  /* Glass surface */
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.09);
+  --glass-border-bright: rgba(255, 255, 255, 0.16);
+}
+
+/* ── Base reset ───────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Smooth scroll for iOS bounce */
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: #f5f0eb;
+  /* Prevent content shift on scroll */
+  overflow-x: hidden;
+}
+
+/* ── Typography utilities ─────────────────────── */
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+.font-accent {
+  font-family: var(--font-accent), monospace;
+  letter-spacing: 0.15em;
+}
+
+/* ── Glassmorphism card ───────────────────────── */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+}
+
+.glass-bright {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--glass-border-bright);
+  backdrop-filter: blur(32px) saturate(1.6);
+  -webkit-backdrop-filter: blur(32px) saturate(1.6);
+}
+
+/* ── Ambient glow orbs ────────────────────────── */
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* ── Shimmer skeleton ─────────────────────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ── Noise grain overlay ──────────────────────── */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* ── Star rating fill ─────────────────────────── */
+.star-fill {
+  color: #f5b944;
+  filter: drop-shadow(0 0 4px rgba(245, 185, 68, 0.5));
+}
+
+/* ── CTA button glow ──────────────────────────── */
+.btn-glow {
+  box-shadow:
+    0 0 0 1px rgba(212, 121, 26, 0.5),
+    0 8px 32px rgba(212, 121, 26, 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.btn-glow:hover {
+  box-shadow:
+    0 0 0 1px rgba(212, 121, 26, 0.8),
+    0 12px 48px rgba(212, 121, 26, 0.55),
+    0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Divider gradient line ────────────────────── */
+.divider-gradient {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(212, 121, 26, 0.4) 30%,
+    rgba(212, 121, 26, 0.4) 70%,
+    transparent
+  );
+}
+
+/* ── Prevent pull-to-refresh jank on iOS ──────── */
+body {
+  overscroll-behavior-y: contain;
+}
+
+/* ── Focus ring for accessibility ────────────── */
+:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
