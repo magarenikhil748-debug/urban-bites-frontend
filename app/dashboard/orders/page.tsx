@@ -24,6 +24,7 @@ import {
   X,
 } from 'lucide-react'
 import { FormEvent, ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
+import { useDashboard } from '@/components/dashboard/DashboardProvider'
 import { loadSocketClient, type DashboardSocket } from '@/lib/socket-client'
 
 type OrderStatus = 'PLACED' | 'ACCEPTED' | 'PREPARING' | 'READY' | 'SERVED' | 'CANCELLED'
@@ -601,6 +602,7 @@ function OrderLane({
 }
 
 export default function LiveOrdersDashboardPage() {
+  const { session: shellSession, selectedRestaurantId: shellSelectedRestaurantId } = useDashboard()
   const [session, setSession] = useState<Session | null>(null)
   const [restoringSession, setRestoringSession] = useState(true)
   const [selectedRestaurantId, setSelectedRestaurantId] = useState('')
@@ -624,44 +626,16 @@ export default function LiveOrdersDashboardPage() {
   )
 
   useEffect(() => {
-    const restore = async () => {
-      const token = localStorage.getItem(sessionStorageKey)
-      if (!token) {
-        setRestoringSession(false)
-        return
-      }
-
-      try {
-        const meData = await apiRequest<{ user: CurrentUser }>('/api/v1/auth/me', { token })
-        if (meData.user.memberships.length === 0) {
-          throw new Error('No restaurant access')
-        }
-        setSession({ accessToken: token, user: meData.user })
-      } catch {
-        localStorage.removeItem(sessionStorageKey)
-      } finally {
-        setRestoringSession(false)
-      }
-    }
-
-    void restore()
-  }, [])
+    setSession(shellSession)
+    setRestoringSession(false)
+  }, [shellSession])
 
   useEffect(() => {
-    if (!session) {
+    if (!shellSelectedRestaurantId) {
       return
     }
-
-    setSelectedRestaurantId((current) => {
-      if (
-        current &&
-        session.user.memberships.some((membership) => membership.restaurant.id === current)
-      ) {
-        return current
-      }
-      return session.user.memberships[0]?.restaurant.id ?? ''
-    })
-  }, [session])
+    setSelectedRestaurantId(shellSelectedRestaurantId)
+  }, [shellSelectedRestaurantId])
 
   const loadOrders = useCallback(
     async (quiet = false) => {
@@ -895,8 +869,8 @@ export default function LiveOrdersDashboardPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#0a0c0f] text-white">
-      <header className="sticky top-0 z-40 border-b border-white/[0.07] bg-[#0a0c0f]/95 backdrop-blur-xl">
+    <div className="text-white">
+      <header className="hidden">
         <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <div className="flex min-w-0 items-center gap-3">
             <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-black">
@@ -948,7 +922,7 @@ export default function LiveOrdersDashboardPage() {
         </div>
       </header>
 
-      <div className="mx-auto max-w-[1600px] px-4 py-5 sm:px-6 sm:py-7">
+      <div>
         <section className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.23em] text-amber-400">
@@ -961,8 +935,36 @@ export default function LiveOrdersDashboardPage() {
             </p>
           </div>
 
+          <div className="flex items-center gap-2">
+            <div
+              className={`flex min-h-11 items-center gap-2 rounded-xl px-3 text-xs font-bold ${
+                connectionState === 'live'
+                  ? 'bg-emerald-400/10 text-emerald-300'
+                  : connectionState === 'connecting'
+                    ? 'bg-amber-400/10 text-amber-300'
+                    : 'bg-rose-400/10 text-rose-300'
+              }`}
+            >
+              {connectionState === 'live' ? <Wifi size={14} /> : <WifiOff size={14} />}
+              {connectionState === 'live'
+                ? 'Live'
+                : connectionState === 'connecting'
+                  ? 'Connecting'
+                  : 'Polling'}
+            </div>
+            <button
+              type="button"
+              onClick={() => void loadOrders(true)}
+              disabled={refreshing}
+              aria-label="Refresh orders"
+              className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-zinc-400 transition hover:text-white"
+            >
+              <RefreshCw size={17} className={refreshing ? 'animate-spin' : ''} />
+            </button>
+          </div>
+
           {session.user.memberships.length > 1 && (
-            <label className="block min-w-64">
+            <label className="hidden min-w-64">
               <span className="mb-2 block text-xs font-bold text-zinc-500">Restaurant</span>
               <select
                 value={selectedRestaurantId}
@@ -1128,6 +1130,6 @@ export default function LiveOrdersDashboardPage() {
           </>
         )}
       </div>
-    </main>
+    </div>
   )
 }

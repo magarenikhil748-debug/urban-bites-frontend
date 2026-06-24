@@ -87,13 +87,17 @@ body {
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 /* ── Noise grain overlay ──────────────────────── */
 .grain::after {
-  content: "";
+  content: '';
   position: fixed;
   inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
@@ -114,7 +118,9 @@ body {
     0 0 0 1px rgba(212, 121, 26, 0.5),
     0 8px 32px rgba(212, 121, 26, 0.35),
     0 2px 8px rgba(0, 0, 0, 0.4);
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
 }
 
 .btn-glow:hover {
@@ -146,4 +152,31 @@ body {
   outline: 2px solid var(--brand-primary);
   outline-offset: 3px;
   border-radius: 4px;
+}
+
+@layer components {
+  .dashboard-input {
+    @apply min-h-12 w-full rounded-xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none transition placeholder:text-white/20 focus:border-[#e8b968]/60 disabled:cursor-not-allowed disabled:opacity-55;
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+
+  #cafe-qr-poster,
+  #cafe-qr-poster * {
+    visibility: visible !important;
+  }
+
+  #cafe-qr-poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    min-height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+  }
 }
