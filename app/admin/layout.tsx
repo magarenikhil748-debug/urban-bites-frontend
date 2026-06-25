@@ -3,7 +3,7 @@ import { AdminProvider } from '@/components/admin/AdminProvider'
 import { AdminShell } from '@/components/admin/AdminShell'
 
 export const metadata: Metadata = {
-  title: 'CafeOS Platform Admin',
+  title: 'Tavero Admin',
   description: 'Marketplace cafe approval and operational controls.',
 }
 

@@ -130,7 +130,7 @@ export default function CafeQrSetupPage() {
     <div className="space-y-7">
       <DashboardPageHeader
         eyebrow="Ordering access"
-        title="QR setup"
+        title="Tavero QR"
         description="Turn your public menu into a cafe-ready ordering asset customers can scan from tables, the counter, or printed material."
         actions={
           <>
@@ -258,7 +258,11 @@ export default function CafeQrSetupPage() {
             <div className="mt-5 space-y-4">
               {[
                 [Store, 'Customer opens your cafe menu', `/cafe/${restaurant.slug}/menu`],
-                [QrCode, 'Customer selects an active table', 'Tables are managed in CafeOS'],
+                [
+                  QrCode,
+                  'Customer selects an active table',
+                  'Tables are managed in Tavero Partner',
+                ],
                 [ShieldCheck, 'Order reaches live operations', 'Prices remain server-verified'],
               ].map(([Icon, title, detail]) => {
                 const StepIcon = Icon as typeof Store
@@ -317,9 +321,7 @@ export default function CafeQrSetupPage() {
                 {qr?.menuUrl ?? `/cafe/${restaurant.slug}/menu`}
               </p>
               <div className="mx-auto mt-8 h-px max-w-xs bg-[#17251f]/10" />
-              <p className="mt-5 text-xs font-black text-[#17251f]/48">
-                Powered by Cafe Marketplace
-              </p>
+              <p className="mt-5 text-xs font-black text-[#17251f]/48">Powered by Tavero</p>
               <p className="mt-1 text-[10px] uppercase tracking-[0.18em] text-[#17251f]/35">
                 Discover. Scan. Order.
               </p>

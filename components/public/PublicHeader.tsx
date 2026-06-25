@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { ArrowUpRight, Coffee, LayoutDashboard } from 'lucide-react'
+import { ArrowUpRight, LayoutDashboard } from 'lucide-react'
+import { TaveroBrand } from '@/components/brand/TaveroBrand'
 
 export function PublicHeader({ floating = false }: { floating?: boolean }) {
   return (
@@ -11,32 +12,12 @@ export function PublicHeader({ floating = false }: { floating?: boolean }) {
       }
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <Link href="/cafes" className="group flex items-center gap-3">
-          <span
-            className={`flex h-10 w-10 items-center justify-center rounded-2xl transition group-hover:-rotate-3 ${
-              floating
-                ? 'border border-white/15 bg-white/10 text-white backdrop-blur-xl'
-                : 'bg-[#1b2b25] text-[#f3d69b]'
-            }`}
-          >
-            <Coffee size={20} strokeWidth={2.3} />
-          </span>
-          <span>
-            <span
-              className={`block text-sm font-black tracking-tight ${
-                floating ? 'text-white' : 'text-[#1b2b25]'
-              }`}
-            >
-              Cafe Marketplace
-            </span>
-            <span
-              className={`block text-[10px] font-bold uppercase tracking-[0.2em] ${
-                floating ? 'text-white/55' : 'text-stone-500'
-              }`}
-            >
-              Discover. Scan. Order.
-            </span>
-          </span>
+        <Link
+          href="/"
+          className={floating ? 'text-white' : 'text-[#1b2b25]'}
+          aria-label="Tavero home"
+        >
+          <TaveroBrand compact inverse={floating} />
         </Link>
 
         <nav className="flex items-center gap-2 sm:gap-3" aria-label="Public navigation">
@@ -57,7 +38,7 @@ export function PublicHeader({ floating = false }: { floating?: boolean }) {
             }`}
           >
             <LayoutDashboard size={15} />
-            <span className="hidden sm:inline">Cafe dashboard</span>
+            <span className="hidden sm:inline">Tavero Partner</span>
             <span className="sm:hidden">Dashboard</span>
             <ArrowUpRight size={14} className="hidden sm:block" />
           </Link>

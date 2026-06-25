@@ -1,9 +1,18 @@
-// app/page.tsx
-// Root route — demo redirect so "/" doesn't 404 during development.
-// In production, the root would be the restaurant's marketing site.
-import { redirect } from "next/navigation";
+import type { Metadata } from 'next'
+import { TaveroLandingPage } from '@/components/landing/TaveroLandingPage'
+
+export const metadata: Metadata = {
+  title: 'Tavero — Discover. Scan. Order.',
+  description:
+    'Tavero helps customers discover modern cafes and lets cafe owners manage QR ordering, live orders, and marketplace visibility.',
+  openGraph: {
+    title: 'Tavero — Discover. Scan. Order.',
+    description: 'Discover cafes by vibe, explore menus, scan QR, and order from your table.',
+    type: 'website',
+    siteName: 'Tavero',
+  },
+}
 
 export default function RootPage() {
-  // Redirect to demo table 5 (same as QR code example)
-  redirect("/table/5");
+  return <TaveroLandingPage />
 }

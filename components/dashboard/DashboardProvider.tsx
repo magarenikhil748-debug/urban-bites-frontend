@@ -18,6 +18,7 @@ import {
   type DashboardSession,
   type RestaurantMembership,
 } from '@/lib/dashboard-api'
+import { TaveroBrand } from '@/components/brand/TaveroBrand'
 
 type DashboardContextValue = {
   session: DashboardSession | null
@@ -76,9 +77,9 @@ function DashboardLogin({
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#e8b968] text-[#17251f]">
               <ChefHat size={28} strokeWidth={2.4} />
             </div>
-            <p className="mt-8 text-xs font-black uppercase tracking-[0.24em] text-[#e8b968]">
-              CafeOS
-            </p>
+            <div className="mt-8 text-white">
+              <TaveroBrand inverse label="Tavero Partner" />
+            </div>
             <h1 className="mt-3 font-display text-5xl font-bold leading-[1.02]">
               Your cafe,
               <span className="block text-[#e8b968]">beautifully operated.</span>
@@ -88,7 +89,7 @@ function DashboardLogin({
               from one connected command center.
             </p>
           </div>
-          <p className="text-xs text-white/30">Cafe Marketplace · Discover. Scan. Order.</p>
+          <p className="text-xs text-white/30">Tavero · Discover. Scan. Order.</p>
         </section>
 
         <section className="p-6 sm:p-10">
@@ -98,7 +99,7 @@ function DashboardLogin({
           <p className="mt-6 text-xs font-black uppercase tracking-[0.22em] text-[#e8b968]">
             Owner access
           </p>
-          <h2 className="mt-2 text-3xl font-black">Open your CafeOS</h2>
+          <h2 className="mt-2 text-3xl font-black">Open Tavero Partner</h2>
           <p className="mt-2 text-sm leading-6 text-white/45">
             Sign in with your owner or staff account. Access is limited to cafes linked to your
             membership.

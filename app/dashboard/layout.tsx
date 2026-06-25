@@ -3,7 +3,7 @@ import { DashboardProvider } from '@/components/dashboard/DashboardProvider'
 import { DashboardShell } from '@/components/dashboard/DashboardShell'
 
 export const metadata: Metadata = {
-  title: 'CafeOS — Owner Dashboard',
+  title: 'Tavero Partner — Owner Dashboard',
   description: 'Manage your cafe profile, menu, tables, QR ordering, and live operations.',
 }
 

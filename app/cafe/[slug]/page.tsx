@@ -131,7 +131,7 @@ export default function CafeProfilePage({ params }: { params: { slug: string } }
 
   const location = cafeLocation(cafe)
   const profileUrl = getCafeProfileUrl(cafe.slug)
-  const shareMessage = `Discover ${cafe.name} on Cafe Marketplace: ${profileUrl}`
+  const shareMessage = `Discover ${cafe.name} on Tavero: ${profileUrl}`
 
   const copyProfile = async () => {
     await navigator.clipboard.writeText(profileUrl)

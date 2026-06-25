@@ -351,7 +351,7 @@ export default function CafesMarketplacePage() {
           <div className="flex items-center gap-3">
             <Coffee size={20} className="text-[#e3b769]" />
             <div>
-              <p className="text-sm font-black">Cafe Marketplace</p>
+              <p className="text-sm font-black">Tavero Marketplace</p>
               <p className="text-xs text-white/40">Discover. Scan. Order.</p>
             </div>
           </div>

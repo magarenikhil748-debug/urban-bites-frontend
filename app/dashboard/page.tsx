@@ -164,7 +164,7 @@ export default function DashboardHomePage() {
   const currency = cafe?.currency ?? 'INR'
 
   if (!session) return null
-  if (loading) return <DashboardLoading label="Loading CafeOS home" />
+  if (loading) return <DashboardLoading label="Loading Tavero Partner home" />
   if (error) return <DashboardError message={error} onRetry={() => void load()} />
   if (!cafe) return <DashboardError message="No cafe is linked to this account." />
 

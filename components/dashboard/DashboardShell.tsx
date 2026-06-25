@@ -7,13 +7,13 @@ import {
   MenuSquare,
   QrCode,
   ReceiptText,
-  Settings2,
   Store,
   Table2,
 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ReactNode } from 'react'
+import { TaveroBrand } from '@/components/brand/TaveroBrand'
 import { useDashboard } from './DashboardProvider'
 
 const navigation = [
@@ -40,16 +40,8 @@ export function DashboardShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-[#09100d] text-white">
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 border-r border-white/[0.07] bg-[#0d1612] lg:flex lg:flex-col">
         <div className="border-b border-white/[0.07] p-6">
-          <Link href="/dashboard" className="flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#e8b968] text-[#17251f]">
-              <Settings2 size={21} strokeWidth={2.5} />
-            </span>
-            <span>
-              <span className="block text-lg font-black">CafeOS</span>
-              <span className="block text-[10px] font-bold uppercase tracking-[0.19em] text-white/30">
-                Discover. Scan. Order.
-              </span>
-            </span>
+          <Link href="/dashboard" className="text-white">
+            <TaveroBrand compact inverse label="Tavero Partner" />
           </Link>
         </div>
 
@@ -111,7 +103,9 @@ export function DashboardShell({ children }: { children: ReactNode }) {
         <header className="sticky top-0 z-30 border-b border-white/[0.07] bg-[#09100d]/92 backdrop-blur-xl">
           <div className="flex min-h-[4.5rem] items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
             <div className="min-w-0">
-              <p className="truncate text-sm font-black sm:text-base">{cafe?.name ?? 'CafeOS'}</p>
+              <p className="truncate text-sm font-black sm:text-base">
+                {cafe?.name ?? 'Tavero Partner'}
+              </p>
               <p className="truncate text-xs text-white/30">
                 {selectedMembership?.role.toLowerCase()} workspace · {session.user.name}
               </p>

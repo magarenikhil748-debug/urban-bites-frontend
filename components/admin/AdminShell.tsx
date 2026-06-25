@@ -1,8 +1,9 @@
 'use client'
 
-import { ExternalLink, LogOut, ShieldCheck, Store } from 'lucide-react'
+import { ExternalLink, LogOut, Store } from 'lucide-react'
 import Link from 'next/link'
 import { ReactNode } from 'react'
+import { TaveroBrand } from '@/components/brand/TaveroBrand'
 import { useAdmin } from './AdminProvider'
 
 export function AdminShell({ children }: { children: ReactNode }) {
@@ -12,16 +13,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-[#070b12] text-white">
       <header className="sticky top-0 z-40 border-b border-white/[0.07] bg-[#070b12]/92 backdrop-blur-xl">
         <div className="mx-auto flex min-h-18 max-w-[1500px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-          <Link href="/admin/cafes" className="flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-300 text-[#071019]">
-              <ShieldCheck size={21} />
-            </span>
-            <span>
-              <span className="block text-sm font-black sm:text-base">CafeOS Admin</span>
-              <span className="block text-[10px] font-bold uppercase tracking-[0.18em] text-white/30">
-                Marketplace operations
-              </span>
-            </span>
+          <Link href="/admin/cafes" className="text-white">
+            <TaveroBrand compact inverse label="Tavero Admin" />
           </Link>
           <div className="flex items-center gap-2">
             <Link
