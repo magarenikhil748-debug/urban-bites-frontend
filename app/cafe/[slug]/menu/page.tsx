@@ -19,6 +19,7 @@ import {
   UtensilsCrossed,
 } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { captureProductEvent } from '@/lib/product-analytics'
 
 type Cafe = {
   id: string
@@ -222,6 +223,7 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
   const [orderConfirmation, setOrderConfirmation] = useState<OrderConfirmation | null>(null)
   const [reloadKey, setReloadKey] = useState(0)
   const idempotencyKeyRef = useRef(createIdempotencyKey())
+  const orderStartedTrackedRef = useRef(false)
   const checkoutRef = useRef<HTMLElement>(null)
   const confirmationRef = useRef<HTMLElement>(null)
 
@@ -258,6 +260,7 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
         setCafe(menuBody.data.cafe)
         setCategories(menuBody.data.categories)
         setTables(tablesBody.data.tables)
+        captureProductEvent('qr_menu_viewed', { cafe_id: menuBody.data.cafe.id })
         setSelectedTableId((current) =>
           tablesBody.data.tables.some((table) => table.id === current)
             ? current
@@ -318,6 +321,10 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
   )
 
   const changeQuantity = (itemId: string, amount: number) => {
+    if (amount > 0 && !orderStartedTrackedRef.current) {
+      orderStartedTrackedRef.current = true
+      captureProductEvent('order_started', { cafe_id: cafe?.id })
+    }
     setOrderConfirmation(null)
     setOrderError('')
     setQuantities((current) => ({
@@ -384,7 +391,12 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
       })
       setQuantities({})
       setSpecialInstruction('')
+      captureProductEvent('order_placed', {
+        cafe_id: cafe?.id,
+        item_count: itemCount,
+      })
       idempotencyKeyRef.current = createIdempotencyKey()
+      orderStartedTrackedRef.current = false
     } catch (error) {
       setOrderError(error instanceof Error ? error.message : 'Unable to place the order.')
       checkoutRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })

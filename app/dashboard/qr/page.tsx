@@ -1,10 +1,12 @@
 'use client'
 
 import {
+  AlertTriangle,
   Check,
   Copy,
   Download,
   ExternalLink,
+  MessageCircle,
   Printer,
   QrCode,
   ShieldCheck,
@@ -20,6 +22,8 @@ import {
 } from '@/components/dashboard/DashboardPrimitives'
 import { useDashboard } from '@/components/dashboard/DashboardProvider'
 import { dashboardApiRequest, type Restaurant } from '@/lib/dashboard-api'
+import { captureProductEvent } from '@/lib/product-analytics'
+import { getWhatsAppShareUrl, isLocalUrl } from '@/lib/share-links'
 
 type PublicCafeQr = {
   id: string
@@ -84,6 +88,10 @@ export default function CafeQrSetupPage() {
       }
       setError('')
       setCopied(true)
+      captureProductEvent('cafe_link_copied', {
+        cafe_id: restaurant?.id,
+        link_type: 'menu',
+      })
       window.setTimeout(() => setCopied(false), 2200)
     } catch {
       const fallback = document.createElement('textarea')
@@ -98,6 +106,10 @@ export default function CafeQrSetupPage() {
       if (copiedWithFallback) {
         setError('')
         setCopied(true)
+        captureProductEvent('cafe_link_copied', {
+          cafe_id: restaurant?.id,
+          link_type: 'menu',
+        })
         window.setTimeout(() => setCopied(false), 2200)
       } else {
         setError('Your browser blocked clipboard access. Copy the URL from the field instead.')
@@ -108,6 +120,11 @@ export default function CafeQrSetupPage() {
   if (loading) return <DashboardLoading label="Loading cafe QR setup" />
   if (error && !restaurant) return <DashboardError message={error} onRetry={() => void load()} />
   if (!restaurant) return <DashboardError message="Cafe QR setup is unavailable." />
+
+  const localQrWarning = qr ? isLocalUrl(qr.menuUrl) : false
+  const whatsappMessage = qr
+    ? `Scan or open ${restaurant.name}'s digital menu to order at your table: ${qr.menuUrl}`
+    : ''
 
   return (
     <div className="space-y-7">
@@ -140,6 +157,13 @@ export default function CafeQrSetupPage() {
         <DashboardNotice
           title="Public QR is not available"
           message={`${qrUnavailableReason}. The backend only returns the cafe QR after the cafe is active and marketplace-approved; no QR is being fabricated locally.`}
+          tone="warning"
+        />
+      )}
+      {localQrWarning && (
+        <DashboardNotice
+          title="This QR points to localhost"
+          message="It will only work on this computer. Set FRONTEND_URL on the backend and NEXT_PUBLIC_APP_URL on the frontend to the deployed HTTPS domain, then regenerate/reload this QR before printing."
           tone="warning"
         />
       )}
@@ -177,11 +201,12 @@ export default function CafeQrSetupPage() {
               </div>
             </div>
 
-            <div className="mt-5 grid gap-2 sm:grid-cols-2">
+            <div className="mt-5 grid gap-2 sm:grid-cols-3">
               {qr ? (
                 <a
                   href={qr.qrCodeDataUrl}
                   download={`${qr.slug}-cafe-ordering-qr.png`}
+                  onClick={() => captureProductEvent('qr_downloaded', { cafe_id: restaurant.id })}
                   className="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-[#e8b968] px-4 text-sm font-black text-[#17251f]"
                 >
                   <Download size={17} /> Download QR
@@ -199,7 +224,33 @@ export default function CafeQrSetupPage() {
               >
                 <Printer size={17} /> Print poster
               </button>
+              {qr ? (
+                <a
+                  href={getWhatsAppShareUrl(whatsappMessage)}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() =>
+                    captureProductEvent('cafe_shared_whatsapp', {
+                      cafe_id: restaurant.id,
+                      link_type: 'menu',
+                    })
+                  }
+                  className="flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-emerald-300/20 bg-emerald-400/10 px-4 text-sm font-black text-emerald-200"
+                >
+                  <MessageCircle size={17} /> WhatsApp
+                </a>
+              ) : (
+                <span className="flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-white/10 px-4 text-sm font-black text-white/25">
+                  <MessageCircle size={17} /> WhatsApp
+                </span>
+              )}
             </div>
+            {localQrWarning && (
+              <p className="mt-4 flex items-start gap-2 text-xs leading-5 text-amber-200/75">
+                <AlertTriangle size={15} className="mt-0.5 shrink-0" />
+                Do not distribute this QR until the encoded URL uses your deployed public domain.
+              </p>
+            )}
           </article>
 
           <article className="rounded-[1.8rem] border border-white/[0.07] bg-[#111a16] p-6">

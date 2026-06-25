@@ -25,6 +25,7 @@ import {
   type PublicCafe,
   type PublicMenuCategory,
 } from '@/lib/public-marketplace'
+import { captureProductEvent } from '@/lib/product-analytics'
 
 type CafeListing = PublicCafe & {
   menuItemCount: number
@@ -37,6 +38,10 @@ export default function CafesMarketplacePage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [reloadKey, setReloadKey] = useState(0)
+
+  useEffect(() => {
+    captureProductEvent('marketplace_viewed')
+  }, [])
 
   useEffect(() => {
     const controller = new AbortController()

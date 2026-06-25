@@ -1,4 +1,12 @@
-# Urban Bites QR Landing Page
+# Cafe Marketplace and QR Ordering Frontend
+
+Next.js 14 frontend for public cafe discovery, QR table ordering, cafe operations, and platform
+administration. Copy `.env.example` to `.env.local`; set `NEXT_PUBLIC_API_URL` to the Fastify
+backend and `NEXT_PUBLIC_APP_URL` to this frontend's public origin.
+
+PostHog capture is disabled unless `NEXT_PUBLIC_POSTHOG_KEY` is set. Sentry and Cloudinary
+variables are reserved for a later SDK/signed-upload integration; existing forms accept hosted
+image URLs.
 
 > Premium restaurant QR ordering entry point — Next.js 14, TypeScript, Tailwind CSS, Framer Motion
 
@@ -58,33 +66,36 @@ urban-bites/
 
 ## Route Examples
 
-| URL | Table Shown |
-|-----|-------------|
-| `/table/5` | Table 5 — Main Hall |
-| `/table/12` | Table 12 — Bar Lounge |
-| `/table/A1` | Table A1 |
-| `/table/vip` | Table VIP |
+| URL          | Table Shown           |
+| ------------ | --------------------- |
+| `/table/5`   | Table 5 — Main Hall   |
+| `/table/12`  | Table 12 — Bar Lounge |
+| `/table/A1`  | Table A1              |
+| `/table/vip` | Table VIP             |
 
 ## Design Tokens
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| Brand amber | `#d4791a` | CTA, accents, table number glow |
-| Surface dark | `#1a1210` | Card backgrounds |
-| Base dark | `#0f0b09` | Page background |
-| Display font | Playfair Display | Headlines, logo, table number |
-| Body font | DM Sans | All body copy |
-| Accent font | DM Mono | Labels, badges, status text |
+| Token        | Value            | Usage                           |
+| ------------ | ---------------- | ------------------------------- |
+| Brand amber  | `#d4791a`        | CTA, accents, table number glow |
+| Surface dark | `#1a1210`        | Card backgrounds                |
+| Base dark    | `#0f0b09`        | Page background                 |
+| Display font | Playfair Display | Headlines, logo, table number   |
+| Body font    | DM Sans          | All body copy                   |
+| Accent font  | DM Mono          | Labels, badges, status text     |
 
 ## Connecting to Backend (next steps)
 
 In `app/table/[tableId]/page.tsx`, replace:
+
 ```ts
-const table = resolveTable(params.tableId); // mock
+const table = resolveTable(params.tableId) // mock
 ```
+
 with:
+
 ```ts
-const table = await fetch(`/api/tables/${params.tableId}`).then(r => r.json());
+const table = await fetch(`/api/tables/${params.tableId}`).then((r) => r.json())
 ```
 
 In `lib/restaurant-data.ts`, replace `RESTAURANT` const with a fetch from `/api/restaurant/:id`.

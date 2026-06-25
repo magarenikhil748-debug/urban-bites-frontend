@@ -1,4 +1,4 @@
-export type UserRole = 'OWNER' | 'MANAGER' | 'STAFF' | 'KITCHEN'
+export type UserRole = 'ADMIN' | 'OWNER' | 'MANAGER' | 'STAFF' | 'KITCHEN'
 
 export type Branch = {
   id: string

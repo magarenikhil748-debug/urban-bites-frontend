@@ -10,6 +10,7 @@ import {
   Clock3,
   Coffee,
   MapPin,
+  MessageCircle,
   Phone,
   QrCode,
   Sparkles,
@@ -28,6 +29,8 @@ import {
   type PublicMenuCategory,
   type PublicTable,
 } from '@/lib/public-marketplace'
+import { captureProductEvent } from '@/lib/product-analytics'
+import { getCafeProfileUrl, getWhatsAppShareUrl } from '@/lib/share-links'
 
 function ProfileLoading() {
   return (
@@ -52,6 +55,7 @@ export default function CafeProfilePage({ params }: { params: { slug: string } }
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [reloadKey, setReloadKey] = useState(0)
+  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -77,6 +81,7 @@ export default function CafeProfilePage({ params }: { params: { slug: string } }
         setCafe(detail.cafe)
         setCategories(menu.categories)
         setTables(tableData.tables)
+        captureProductEvent('cafe_profile_viewed', { cafe_id: detail.cafe.id })
       } catch (loadError) {
         if (loadError instanceof DOMException && loadError.name === 'AbortError') {
           return
@@ -125,6 +130,15 @@ export default function CafeProfilePage({ params }: { params: { slug: string } }
   }
 
   const location = cafeLocation(cafe)
+  const profileUrl = getCafeProfileUrl(cafe.slug)
+  const shareMessage = `Discover ${cafe.name} on Cafe Marketplace: ${profileUrl}`
+
+  const copyProfile = async () => {
+    await navigator.clipboard.writeText(profileUrl)
+    setCopied(true)
+    captureProductEvent('cafe_link_copied', { cafe_id: cafe.id, link_type: 'profile' })
+    window.setTimeout(() => setCopied(false), 1800)
+  }
 
   return (
     <main className="min-h-screen bg-[#f7f4ed] text-[#17251f]">
@@ -205,6 +219,28 @@ export default function CafeProfilePage({ params }: { params: { slug: string } }
               >
                 Back to cafes
               </Link>
+              <a
+                href={getWhatsAppShareUrl(shareMessage)}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() =>
+                  captureProductEvent('cafe_shared_whatsapp', {
+                    cafe_id: cafe.id,
+                    link_type: 'profile',
+                  })
+                }
+                className="flex min-h-14 items-center justify-center gap-2 rounded-2xl border border-emerald-300/25 bg-emerald-400/10 px-5 font-black text-emerald-100 backdrop-blur-xl"
+              >
+                <MessageCircle size={18} />
+                Share
+              </a>
+              <button
+                type="button"
+                onClick={() => void copyProfile()}
+                className="min-h-14 rounded-2xl border border-white/15 bg-white/[0.06] px-5 font-black text-white"
+              >
+                {copied ? 'Link copied' : 'Copy link'}
+              </button>
             </div>
           </div>
         </div>
