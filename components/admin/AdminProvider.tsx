@@ -48,15 +48,17 @@ function AdminLogin({ onAuthenticated }: { onAuthenticated: (session: DashboardS
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#070b12] px-4 py-10 text-white">
-      <section className="w-full max-w-md rounded-[2rem] border border-white/10 bg-[#0e1520] p-6 shadow-2xl sm:p-8">
-        <span className="flex h-13 w-13 items-center justify-center rounded-2xl bg-cyan-300 text-[#071019]">
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#09100d] px-4 py-10 text-white">
+      <div className="pointer-events-none absolute -left-28 top-0 h-80 w-80 rounded-full bg-[#e8b968]/10 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-40 right-0 h-96 w-96 rounded-full bg-[#75966d]/10 blur-3xl" />
+      <section className="relative w-full max-w-md rounded-[2rem] border border-white/10 bg-[#111a16]/95 p-6 shadow-2xl shadow-black/30 backdrop-blur sm:p-8">
+        <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#e8b968] text-[#17251f] shadow-lg shadow-black/20">
           <ShieldCheck size={25} />
         </span>
-        <p className="mt-6 text-xs font-black uppercase tracking-[0.23em] text-cyan-300">
+        <p className="mt-6 text-xs font-black uppercase tracking-[0.23em] text-[#e8b968]">
           Platform control
         </p>
-        <h1 className="mt-2 text-3xl font-black">Admin sign in</h1>
+        <h1 className="mt-2 font-display text-4xl font-bold">Admin sign in</h1>
         <p className="mt-2 text-sm leading-6 text-white/45">
           This route requires a platform administrator account. Cafe owner accounts remain isolated
           to their own dashboard.
@@ -71,7 +73,7 @@ function AdminLogin({ onAuthenticated }: { onAuthenticated: (session: DashboardS
               onChange={(event) => setEmail(event.target.value)}
               autoComplete="email"
               required
-              className="min-h-14 w-full rounded-2xl border border-white/10 bg-black/20 px-4 outline-none focus:border-cyan-300/60"
+              className="min-h-14 w-full rounded-2xl border border-white/10 bg-black/20 px-4 outline-none transition focus:border-[#e8b968]/60"
             />
           </label>
           <label className="block">
@@ -82,7 +84,7 @@ function AdminLogin({ onAuthenticated }: { onAuthenticated: (session: DashboardS
               onChange={(event) => setPassword(event.target.value)}
               autoComplete="current-password"
               required
-              className="min-h-14 w-full rounded-2xl border border-white/10 bg-black/20 px-4 outline-none focus:border-cyan-300/60"
+              className="min-h-14 w-full rounded-2xl border border-white/10 bg-black/20 px-4 outline-none transition focus:border-[#e8b968]/60"
             />
           </label>
           {error && (
@@ -93,7 +95,7 @@ function AdminLogin({ onAuthenticated }: { onAuthenticated: (session: DashboardS
           <button
             type="submit"
             disabled={submitting}
-            className="flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-cyan-300 px-5 font-black text-[#071019] disabled:opacity-60"
+            className="flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[#e8b968] px-5 font-black text-[#17251f] transition hover:bg-[#f2cd8c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#e8b968] disabled:opacity-60"
           >
             {submitting ? (
               <Loader2 size={19} className="animate-spin" />
@@ -110,10 +112,10 @@ function AdminLogin({ onAuthenticated }: { onAuthenticated: (session: DashboardS
 
 function Unauthorized({ session, logout }: { session: DashboardSession; logout: () => void }) {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#070b12] px-4 text-white">
-      <section className="w-full max-w-lg rounded-[2rem] border border-amber-300/20 bg-[#0e1520] p-8 text-center">
+    <main className="flex min-h-screen items-center justify-center bg-[#09100d] px-4 text-white">
+      <section className="w-full max-w-lg rounded-[2rem] border border-amber-300/20 bg-[#111a16] p-8 text-center shadow-2xl shadow-black/30">
         <AlertTriangle size={34} className="mx-auto text-amber-300" />
-        <h1 className="mt-5 text-2xl font-black">Platform admin access required</h1>
+        <h1 className="mt-5 font-display text-3xl font-bold">Platform admin access required</h1>
         <p className="mt-3 text-sm leading-6 text-white/45">
           {session.user.email} is signed in as {session.user.role}. This account cannot view or
           change platform cafe approvals.
@@ -121,14 +123,14 @@ function Unauthorized({ session, logout }: { session: DashboardSession; logout: 
         <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <Link
             href="/dashboard"
-            className="flex min-h-12 items-center justify-center rounded-2xl border border-white/10 px-5 text-sm font-black text-white/70"
+            className="flex min-h-12 items-center justify-center rounded-2xl border border-white/10 px-5 text-sm font-black text-white/70 transition hover:border-white/20 hover:text-white"
           >
             Open cafe dashboard
           </Link>
           <button
             type="button"
             onClick={logout}
-            className="min-h-12 rounded-2xl bg-cyan-300 px-5 text-sm font-black text-[#071019]"
+            className="min-h-12 rounded-2xl bg-[#e8b968] px-5 text-sm font-black text-[#17251f] transition hover:bg-[#f2cd8c]"
           >
             Sign out
           </button>
@@ -169,7 +171,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
   if (restoring) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#070b12] text-cyan-300">
+      <main className="flex min-h-screen items-center justify-center bg-[#09100d] text-[#e8b968]">
         <Loader2 size={28} className="animate-spin" aria-label="Restoring admin session" />
       </main>
     )

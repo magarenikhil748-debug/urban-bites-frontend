@@ -128,7 +128,7 @@ export default function AdminCafesPage() {
     <div>
       <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
         <div>
-          <h1 className="text-3xl font-black sm:text-4xl">Marketplace cafes</h1>
+          <h1 className="font-display text-4xl font-bold sm:text-5xl">Marketplace cafes</h1>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-white/40">
             Approve public listings and suspend cafe access without exposing owner controls to the
             public marketplace.
@@ -137,7 +137,7 @@ export default function AdminCafesPage() {
         <button
           type="button"
           onClick={() => void load()}
-          className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/10 px-4 text-sm font-black text-white/60"
+          className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/10 px-4 text-sm font-black text-white/60 transition hover:border-[#e8b968]/30 hover:text-[#e8b968]"
         >
           <RefreshCw size={15} /> Refresh
         </button>
@@ -154,7 +154,7 @@ export default function AdminCafesPage() {
           return (
             <article
               key={label as string}
-              className="rounded-[1.5rem] border border-white/[0.07] bg-[#0e1520] p-5"
+              className="rounded-[1.5rem] border border-white/[0.07] bg-[#111a16] p-5 shadow-xl shadow-black/10"
             >
               <SummaryIcon size={19} className={tone as string} />
               <p className="mt-5 text-3xl font-black">{value as number}</p>
@@ -164,14 +164,14 @@ export default function AdminCafesPage() {
         })}
       </section>
 
-      <section className="mt-6 flex flex-col gap-3 rounded-[1.5rem] border border-white/[0.07] bg-[#0e1520] p-3 lg:flex-row">
+      <section className="mt-6 flex flex-col gap-3 rounded-[1.5rem] border border-white/[0.07] bg-[#111a16] p-3 shadow-xl shadow-black/10 lg:flex-row">
         <div className="relative flex-1">
           <Search size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/25" />
           <input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search cafe, slug, city, or owner"
-            className="min-h-12 w-full rounded-xl border border-white/[0.07] bg-black/20 pl-11 pr-4 text-sm outline-none focus:border-cyan-300/40"
+            className="min-h-12 w-full rounded-xl border border-white/[0.07] bg-black/20 pl-11 pr-4 text-sm outline-none transition focus:border-[#e8b968]/50"
           />
         </div>
         <div className="flex gap-2 overflow-x-auto">
@@ -182,8 +182,8 @@ export default function AdminCafesPage() {
               onClick={() => setFilter(item)}
               className={`min-h-12 shrink-0 rounded-xl px-4 text-xs font-black ${
                 filter === item
-                  ? 'bg-cyan-300 text-[#071019]'
-                  : 'border border-white/10 text-white/45'
+                  ? 'bg-[#e8b968] text-[#17251f]'
+                  : 'border border-white/10 text-white/45 transition hover:border-white/20 hover:text-white/70'
               }`}
             >
               {item.charAt(0) + item.slice(1).toLowerCase()}
@@ -204,7 +204,7 @@ export default function AdminCafesPage() {
       )}
 
       {loading ? (
-        <div className="flex min-h-72 items-center justify-center text-cyan-300">
+        <div className="flex min-h-72 items-center justify-center text-[#e8b968]">
           <Loader2 size={27} className="animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
@@ -218,10 +218,10 @@ export default function AdminCafesPage() {
             return (
               <article
                 key={cafe.id}
-                className="overflow-hidden rounded-[1.7rem] border border-white/[0.07] bg-[#0e1520]"
+                className="overflow-hidden rounded-[1.7rem] border border-white/[0.07] bg-[#111a16] shadow-xl shadow-black/10"
               >
                 <div className="grid sm:grid-cols-[10rem_1fr]">
-                  <div className="min-h-40 bg-[#152231]">
+                  <div className="min-h-40 bg-[#15231d]">
                     {cafe.imageUrl ? (
                       <div
                         className="h-full min-h-40 bg-cover bg-center"
@@ -230,7 +230,7 @@ export default function AdminCafesPage() {
                         aria-label={cafe.name}
                       />
                     ) : (
-                      <div className="flex h-full min-h-40 items-center justify-center text-cyan-300/35">
+                      <div className="flex h-full min-h-40 items-center justify-center text-[#e8b968]/35">
                         <Store size={38} />
                       </div>
                     )}
@@ -245,7 +245,7 @@ export default function AdminCafesPage() {
                         <span
                           className={`rounded-full px-2.5 py-1 text-[10px] font-black ${
                             cafe.isApproved
-                              ? 'bg-emerald-400/10 text-emerald-300'
+                              ? 'bg-[#75966d]/15 text-[#b9d5b2]'
                               : 'bg-amber-400/10 text-amber-300'
                           }`}
                         >
@@ -254,7 +254,7 @@ export default function AdminCafesPage() {
                         <span
                           className={`rounded-full px-2.5 py-1 text-[10px] font-black ${
                             cafe.isActive
-                              ? 'bg-cyan-400/10 text-cyan-300'
+                              ? 'bg-[#75966d]/15 text-[#b9d5b2]'
                               : 'bg-rose-400/10 text-rose-300'
                           }`}
                         >
@@ -297,7 +297,7 @@ export default function AdminCafesPage() {
                         className={`flex min-h-10 items-center gap-2 rounded-xl px-3 text-xs font-black disabled:opacity-50 ${
                           cafe.isActive
                             ? 'border border-rose-300/20 text-rose-200'
-                            : 'bg-cyan-300 text-[#071019]'
+                            : 'bg-[#e8b968] text-[#17251f]'
                         }`}
                       >
                         {cafe.isActive ? <PauseCircle size={14} /> : <PlayCircle size={14} />}
@@ -306,7 +306,7 @@ export default function AdminCafesPage() {
                       <Link
                         href={`/cafe/${cafe.slug}`}
                         target="_blank"
-                        className="flex min-h-10 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-black text-white/45"
+                        className="flex min-h-10 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-black text-white/45 transition hover:border-[#e8b968]/30 hover:text-[#e8b968]"
                       >
                         Public page <ExternalLink size={13} />
                       </Link>
