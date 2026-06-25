@@ -51,10 +51,10 @@ export default function CafeQrSetupPage() {
       setRestaurant(restaurantData.restaurant)
 
       try {
-        const publicData = await dashboardApiRequest<PublicCafeQr>(
+        const publicData = await dashboardApiRequest<{ cafe: PublicCafeQr }>(
           `/api/v1/public/cafes/${encodeURIComponent(restaurantData.restaurant.slug)}`,
         )
-        setQr(publicData)
+        setQr(publicData.cafe)
       } catch (publicError) {
         setQr(null)
         setQrUnavailableReason(
@@ -77,22 +77,32 @@ export default function CafeQrSetupPage() {
   const copyLink = async () => {
     if (!qr) return
     try {
-      await navigator.clipboard.writeText(qr.menuUrl)
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(qr.menuUrl)
+      } else {
+        throw new Error('Clipboard API unavailable')
+      }
+      setError('')
       setCopied(true)
       window.setTimeout(() => setCopied(false), 2200)
     } catch {
-      setError('Your browser blocked clipboard access. Copy the URL from the field instead.')
-    }
-  }
+      const fallback = document.createElement('textarea')
+      fallback.value = qr.menuUrl
+      fallback.style.position = 'fixed'
+      fallback.style.opacity = '0'
+      document.body.appendChild(fallback)
+      fallback.select()
+      const copiedWithFallback = document.execCommand('copy')
+      fallback.remove()
 
-  const downloadQr = () => {
-    if (!qr) return
-    const link = document.createElement('a')
-    link.href = qr.qrCodeDataUrl
-    link.download = `${qr.slug}-cafe-ordering-qr.png`
-    document.body.appendChild(link)
-    link.click()
-    link.remove()
+      if (copiedWithFallback) {
+        setError('')
+        setCopied(true)
+        window.setTimeout(() => setCopied(false), 2200)
+      } else {
+        setError('Your browser blocked clipboard access. Copy the URL from the field instead.')
+      }
+    }
   }
 
   if (loading) return <DashboardLoading label="Loading cafe QR setup" />
@@ -168,14 +178,19 @@ export default function CafeQrSetupPage() {
             </div>
 
             <div className="mt-5 grid gap-2 sm:grid-cols-2">
-              <button
-                type="button"
-                onClick={downloadQr}
-                disabled={!qr}
-                className="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-[#e8b968] px-4 text-sm font-black text-[#17251f] disabled:opacity-35"
-              >
-                <Download size={17} /> Download QR
-              </button>
+              {qr ? (
+                <a
+                  href={qr.qrCodeDataUrl}
+                  download={`${qr.slug}-cafe-ordering-qr.png`}
+                  className="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-[#e8b968] px-4 text-sm font-black text-[#17251f]"
+                >
+                  <Download size={17} /> Download QR
+                </a>
+              ) : (
+                <span className="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-[#e8b968] px-4 text-sm font-black text-[#17251f] opacity-35">
+                  <Download size={17} /> Download QR
+                </span>
+              )}
               <button
                 type="button"
                 onClick={() => window.print()}
