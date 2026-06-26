@@ -1,0 +1,18 @@
+<svg width="420" height="120" viewBox="0 0 420 120" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg">
+  <title id="title">Tavero logo light</title>
+  <desc id="desc">The official Tavero wordmark and abstract ordering mark for light backgrounds.</desc>
+  <g transform="translate(8 13)">
+    <line x1="18" y1="78" x2="42" y2="27" stroke="#2C1810" stroke-width="12" stroke-linecap="round"/>
+    <line x1="66" y1="78" x2="42" y2="27" stroke="#C17F3E" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="42" cy="17" r="16" fill="#2C1810"/>
+    <circle cx="42" cy="17" r="6.8" fill="#FAF7F2"/>
+  </g>
+  <g transform="translate(112 24)">
+    <text x="0" y="50" fill="#2C1810" font-family="Avenir Next, Inter, Segoe UI, Arial, sans-serif" font-size="62" letter-spacing="-4">
+      <tspan font-weight="650">T</tspan><tspan font-weight="300">avero</tspan>
+    </text>
+    <rect x="0" y="61" width="266" height="3" rx="1.5" fill="#E8CFB9"/>
+    <circle cx="8" cy="62.5" r="4.2" fill="#C17F3E"/>
+    <text x="0" y="88" fill="#8B7163" font-family="Avenir Next, Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="4">DISCOVER · SCAN · ORDER</text>
+  </g>
+</svg>

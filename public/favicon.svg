@@ -1,0 +1,9 @@
+<svg width="64" height="64" viewBox="0 0 64 64" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg">
+  <title id="title">Tavero favicon</title>
+  <desc id="desc">Simplified Tavero icon for browser tabs and small app surfaces.</desc>
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="#FAF7F2"/>
+  <line x1="18" y1="54" x2="32" y2="24" stroke="#2C1810" stroke-width="8" stroke-linecap="round"/>
+  <line x1="46" y1="54" x2="32" y2="24" stroke="#C17F3E" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="32" cy="17" r="11" fill="#2C1810"/>
+  <circle cx="32" cy="17" r="4.6" fill="#FAF7F2"/>
+</svg>

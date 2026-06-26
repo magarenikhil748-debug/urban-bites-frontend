@@ -36,13 +36,17 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'Tavero',
   },
+  icons: {
+    icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
+    shortcut: ['/favicon.svg'],
+  },
 }
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
-  themeColor: '#2d1b13',
+  themeColor: '#160B07',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

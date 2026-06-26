@@ -1,4 +1,4 @@
-import { Coffee } from 'lucide-react'
+import { TaveroLogo } from './TaveroLogo'
 
 export function TaveroBrand({
   compact = false,
@@ -9,28 +9,14 @@ export function TaveroBrand({
   inverse?: boolean
   label?: string
 }) {
+  const contextLabel = label === 'Tavero' ? undefined : label.replace(/^Tavero\s*/i, '').trim()
+
   return (
-    <span className="inline-flex items-center gap-3">
-      <span
-        className={`relative flex shrink-0 items-center justify-center rounded-[1rem] ${
-          compact ? 'h-10 w-10' : 'h-11 w-11'
-        } ${inverse ? 'bg-[#F2C572] text-[#2C1810]' : 'bg-[#2C1810] text-[#F2C572]'}`}
-      >
-        <Coffee size={compact ? 19 : 21} strokeWidth={2.4} />
-        <span className="absolute -bottom-1 -right-1 h-3 w-3 rounded-full border-2 border-current bg-[#7B9E6B]" />
-      </span>
-      <span>
-        <span
-          className={`block font-display font-bold leading-none tracking-[-0.03em] ${
-            compact ? 'text-xl' : 'text-2xl'
-          }`}
-        >
-          {label}
-        </span>
-        <span className="mt-1 block text-[9px] font-black uppercase tracking-[0.22em] opacity-55">
-          Discover. Scan. Order.
-        </span>
-      </span>
-    </span>
+    <TaveroLogo
+      variant={inverse ? 'dark' : 'light'}
+      size={compact ? 'sm' : 'md'}
+      showTagline
+      contextLabel={contextLabel || undefined}
+    />
   )
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { ChefHat, Loader2, LockKeyhole, Store } from 'lucide-react'
+import { Loader2, LockKeyhole } from 'lucide-react'
 import {
   createContext,
   FormEvent,
@@ -18,7 +18,7 @@ import {
   type DashboardSession,
   type RestaurantMembership,
 } from '@/lib/dashboard-api'
-import { TaveroBrand } from '@/components/brand/TaveroBrand'
+import { TaveroLogo } from '@/components/brand/TaveroLogo'
 
 type DashboardContextValue = {
   session: DashboardSession | null
@@ -74,11 +74,8 @@ function DashboardLogin({
       <div className="relative grid w-full max-w-5xl overflow-hidden rounded-[2.2rem] border border-white/10 bg-[#101915]/95 shadow-2xl lg:grid-cols-[1.05fr_0.95fr]">
         <section className="hidden border-r border-white/[0.07] p-10 lg:flex lg:flex-col lg:justify-between">
           <div>
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F2C572] text-[#254334]">
-              <ChefHat size={28} strokeWidth={2.4} />
-            </div>
             <div className="mt-8 text-white">
-              <TaveroBrand inverse label="Tavero Partner" />
+              <TaveroLogo variant="dark" size="lg" contextLabel="Partner" />
             </div>
             <h1 className="mt-3 font-display text-5xl font-bold leading-[1.02]">
               Your cafe,
@@ -93,9 +90,13 @@ function DashboardLogin({
         </section>
 
         <section className="p-6 sm:p-10">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/[0.06] text-[#F2C572] lg:hidden">
-            <Store size={23} />
-          </div>
+          <TaveroLogo
+            variant="dark"
+            size="sm"
+            iconOnly
+            contextLabel="Partner"
+            className="lg:hidden"
+          />
           <p className="mt-6 text-xs font-black uppercase tracking-[0.22em] text-[#F2C572]">
             Owner access
           </p>

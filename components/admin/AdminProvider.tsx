@@ -1,6 +1,6 @@
 'use client'
 
-import { AlertTriangle, Loader2, LockKeyhole, ShieldCheck } from 'lucide-react'
+import { AlertTriangle, Loader2, LockKeyhole } from 'lucide-react'
 import Link from 'next/link'
 import { createContext, FormEvent, ReactNode, useContext, useEffect, useState } from 'react'
 import {
@@ -10,6 +10,7 @@ import {
   type CurrentUser,
   type DashboardSession,
 } from '@/lib/dashboard-api'
+import { TaveroLogo } from '@/components/brand/TaveroLogo'
 
 type AdminContextValue = {
   session: DashboardSession
@@ -52,9 +53,7 @@ function AdminLogin({ onAuthenticated }: { onAuthenticated: (session: DashboardS
       <div className="pointer-events-none absolute -left-28 top-0 h-80 w-80 rounded-full bg-[#C17F3E]/10 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-40 right-0 h-96 w-96 rounded-full bg-[#7B9E6B]/10 blur-3xl" />
       <section className="relative w-full max-w-md rounded-[2rem] border border-white/10 bg-[#111a16]/95 p-6 shadow-2xl shadow-black/30 backdrop-blur sm:p-8">
-        <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F2C572] text-[#254334] shadow-lg shadow-black/20">
-          <ShieldCheck size={25} />
-        </span>
+        <TaveroLogo variant="dark" size="md" contextLabel="Admin" />
         <p className="mt-6 text-xs font-black uppercase tracking-[0.23em] text-[#F2C572]">
           Platform control
         </p>

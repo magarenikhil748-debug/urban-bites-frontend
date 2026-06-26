@@ -21,6 +21,7 @@ import {
   DashboardPageHeader,
 } from '@/components/dashboard/DashboardPrimitives'
 import { useDashboard } from '@/components/dashboard/DashboardProvider'
+import { TaveroLogo } from '@/components/brand/TaveroLogo'
 import { dashboardApiRequest, type Restaurant } from '@/lib/dashboard-api'
 import { captureProductEvent } from '@/lib/product-analytics'
 import { getWhatsAppShareUrl, isLocalUrl } from '@/lib/share-links'
@@ -288,11 +289,11 @@ export default function CafeQrSetupPage() {
             className="cafe-qr-poster mx-auto max-w-xl overflow-hidden rounded-[2.2rem] bg-[#f6f0e4] p-4 text-[#17251f] shadow-2xl shadow-black/30 sm:p-6"
           >
             <div className="rounded-[1.7rem] border border-[#17251f]/10 p-6 text-center sm:p-10">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#17251f] text-[#f0c67e]">
-                <Store size={25} />
+              <div className="flex justify-center">
+                <TaveroLogo variant="light" size="md" contextLabel="QR" />
               </div>
-              <p className="mt-7 text-xs font-black uppercase tracking-[0.24em] text-[#a26b22]">
-                Digital table ordering
+              <p className="mt-7 text-xs font-black uppercase tracking-[0.2em] text-[#a26b22]">
+                Tavero QR · Digital table ordering
               </p>
               <h2 className="mt-3 font-display text-4xl font-bold sm:text-5xl">
                 {restaurant.name}
@@ -321,9 +322,11 @@ export default function CafeQrSetupPage() {
                 {qr?.menuUrl ?? `/cafe/${restaurant.slug}/menu`}
               </p>
               <div className="mx-auto mt-8 h-px max-w-xs bg-[#17251f]/10" />
-              <p className="mt-5 text-xs font-black text-[#17251f]/48">Powered by Tavero</p>
-              <p className="mt-1 text-[10px] uppercase tracking-[0.18em] text-[#17251f]/35">
-                Discover. Scan. Order.
+              <div className="mt-5 flex justify-center">
+                <TaveroLogo variant="light" size="sm" showTagline={false} />
+              </div>
+              <p className="mt-2 text-[10px] uppercase tracking-[0.16em] text-[#17251f]/42">
+                Discover · Scan · Order
               </p>
             </div>
           </div>
