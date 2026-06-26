@@ -74,7 +74,7 @@ function DashboardLogin({
       <div className="relative grid w-full max-w-5xl overflow-hidden rounded-[2.2rem] border border-white/10 bg-[#101915]/95 shadow-2xl lg:grid-cols-[1.05fr_0.95fr]">
         <section className="hidden border-r border-white/[0.07] p-10 lg:flex lg:flex-col lg:justify-between">
           <div>
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#e8b968] text-[#17251f]">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F2C572] text-[#254334]">
               <ChefHat size={28} strokeWidth={2.4} />
             </div>
             <div className="mt-8 text-white">
@@ -82,7 +82,7 @@ function DashboardLogin({
             </div>
             <h1 className="mt-3 font-display text-5xl font-bold leading-[1.02]">
               Your cafe,
-              <span className="block text-[#e8b968]">beautifully operated.</span>
+              <span className="block text-[#F2C572]">beautifully operated.</span>
             </h1>
             <p className="mt-5 max-w-md text-sm leading-7 text-white/50">
               Manage your marketplace presence, digital menu, tables, QR ordering, and live service
@@ -93,10 +93,10 @@ function DashboardLogin({
         </section>
 
         <section className="p-6 sm:p-10">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/[0.06] text-[#e8b968] lg:hidden">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/[0.06] text-[#F2C572] lg:hidden">
             <Store size={23} />
           </div>
-          <p className="mt-6 text-xs font-black uppercase tracking-[0.22em] text-[#e8b968]">
+          <p className="mt-6 text-xs font-black uppercase tracking-[0.22em] text-[#F2C572]">
             Owner access
           </p>
           <h2 className="mt-2 text-3xl font-black">Open Tavero Partner</h2>
@@ -115,7 +115,7 @@ function DashboardLogin({
                 autoComplete="email"
                 required
                 placeholder="owner@cafe.com"
-                className="min-h-14 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-base outline-none transition focus:border-[#e8b968]/60"
+                className="tavero-input-dark min-h-14 text-base"
               />
             </label>
             <label className="block">
@@ -127,7 +127,7 @@ function DashboardLogin({
                 autoComplete="current-password"
                 required
                 placeholder="Your password"
-                className="min-h-14 w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-base outline-none transition focus:border-[#e8b968]/60"
+                className="tavero-input-dark min-h-14 text-base"
               />
             </label>
 
@@ -140,7 +140,7 @@ function DashboardLogin({
             <button
               type="submit"
               disabled={submitting}
-              className="flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[#e8b968] px-5 font-black text-[#17251f] transition hover:bg-[#f2cd8c] disabled:opacity-60"
+              className="tavero-button-primary min-h-14 w-full disabled:opacity-60"
             >
               {submitting ? (
                 <Loader2 size={20} className="animate-spin" />
@@ -227,7 +227,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
         aria-label="Restoring dashboard session"
         aria-busy="true"
       >
-        <Loader2 size={28} className="animate-spin text-[#e8b968]" />
+        <Loader2 size={28} className="animate-spin text-[#F2C572]" />
       </main>
     )
   }

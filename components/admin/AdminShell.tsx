@@ -20,7 +20,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
             <Link
               href="/cafes"
               target="_blank"
-              className="hidden min-h-10 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-black text-white/55 transition hover:border-[#e8b968]/30 hover:text-[#e8b968] sm:flex"
+              className="hidden min-h-10 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-black text-white/55 transition hover:-translate-y-0.5 hover:border-[#F2C572]/30 hover:text-[#F2C572] sm:flex"
             >
               Marketplace <ExternalLink size={13} />
             </Link>
@@ -37,7 +37,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
         </div>
       </header>
       <main className="mx-auto max-w-[1500px] px-4 py-7 sm:px-6 lg:px-8 lg:py-10">
-        <div className="mb-7 flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#e8b968]">
+        <div className="mb-7 flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#F2C572]">
           <Store size={14} />
           Cafe approval and availability
         </div>

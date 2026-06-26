@@ -17,6 +17,20 @@ const config: Config = {
         accent: ["var(--font-accent)", "monospace"],
       },
       colors: {
+        tavero: {
+          espresso: "#2C1810",
+          "espresso-dark": "#160B07",
+          cream: "#FAF7F2",
+          "cream-muted": "#EFE7DA",
+          caramel: "#C17F3E",
+          "caramel-light": "#F2C572",
+          matcha: "#7B9E6B",
+          "matcha-dark": "#254334",
+          charcoal: "#2D2D2D",
+          gold: "#D4A853",
+          danger: "#7F1D1D",
+          success: "#166534",
+        },
         // Brand palette — deep amber / cognac restaurant luxury
         brand: {
           50:  "#fdf8f0",

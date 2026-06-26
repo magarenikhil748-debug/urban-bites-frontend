@@ -18,7 +18,9 @@ import {
   Store,
   UtensilsCrossed,
 } from 'lucide-react'
+import Link from 'next/link'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { TaveroBrand } from '@/components/brand/TaveroBrand'
 import { captureProductEvent } from '@/lib/product-analytics'
 
 type Cafe = {
@@ -110,13 +112,13 @@ const getFoodLabel = (foodType: string) => {
 function LoadingState() {
   return (
     <main
-      className="min-h-screen bg-[#0b0908] text-white"
+      className="min-h-screen bg-[#160B07] text-white"
       aria-busy="true"
       aria-label="Loading cafe menu"
     >
       <div className="mx-auto max-w-5xl px-4 pb-32 pt-4 sm:px-6">
         <div className="skeleton h-72 rounded-[2rem]" />
-        <div className="relative -mt-10 mx-3 space-y-4 rounded-[1.75rem] border border-white/10 bg-[#15110f] p-5">
+        <div className="relative -mt-10 mx-3 space-y-4 rounded-[1.75rem] border border-white/10 bg-[#211510] p-5">
           <div className="skeleton h-5 w-32 rounded-full" />
           <div className="skeleton h-11 w-3/4 rounded-xl" />
           <div className="skeleton h-4 w-full rounded-full" />
@@ -139,9 +141,9 @@ function LoadingState() {
 
 function PageError({ message, onRetry }: { message: string; onRetry: () => void }) {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#0b0908] px-6 text-white">
-      <div className="w-full max-w-sm rounded-[2rem] border border-white/10 bg-[#171311] p-7 text-center shadow-2xl">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-400">
+    <main className="flex min-h-screen items-center justify-center bg-[#160B07] px-6 text-white">
+      <div className="w-full max-w-sm rounded-[1.8rem] border border-white/10 bg-[#211510] p-7 text-center shadow-2xl">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#C17F3E]/10 text-[#F2C572]">
           <Store size={30} />
         </div>
         <h1 className="mt-5 text-2xl font-black">Couldn&apos;t load this cafe</h1>
@@ -149,7 +151,7 @@ function PageError({ message, onRetry }: { message: string; onRetry: () => void 
         <button
           type="button"
           onClick={onRetry}
-          className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-amber-500 px-5 font-bold text-black transition hover:bg-amber-400"
+          className="tavero-button-primary mt-6 w-full"
         >
           <RefreshCw size={18} />
           Try again
@@ -174,7 +176,7 @@ function QuantityControl({
         type="button"
         onClick={onIncrease}
         aria-label="Add item"
-        className="flex min-h-12 min-w-[5.5rem] items-center justify-center gap-2 rounded-2xl border border-amber-400/40 bg-amber-500/10 px-4 text-sm font-extrabold text-amber-300 transition active:scale-95"
+        className="flex min-h-12 min-w-[5.5rem] items-center justify-center gap-2 rounded-2xl border border-[#F2C572]/40 bg-[#C17F3E]/10 px-4 text-sm font-extrabold text-[#F2C572] transition hover:bg-[#C17F3E]/15 active:scale-95"
       >
         Add
         <Plus size={17} strokeWidth={3} />
@@ -183,12 +185,12 @@ function QuantityControl({
   }
 
   return (
-    <div className="flex min-h-12 items-center rounded-2xl border border-amber-400/40 bg-amber-500/10">
+    <div className="flex min-h-12 items-center rounded-2xl border border-[#F2C572]/40 bg-[#C17F3E]/10">
       <button
         type="button"
         onClick={onDecrease}
         aria-label="Remove one item"
-        className="flex h-12 w-12 items-center justify-center rounded-l-2xl text-amber-300 transition active:bg-amber-500/20"
+        className="flex h-12 w-12 items-center justify-center rounded-l-2xl text-[#F2C572] transition hover:bg-[#C17F3E]/10 active:bg-[#C17F3E]/20"
       >
         <Minus size={18} strokeWidth={3} />
       </button>
@@ -199,7 +201,7 @@ function QuantityControl({
         type="button"
         onClick={onIncrease}
         aria-label="Add one item"
-        className="flex h-12 w-12 items-center justify-center rounded-r-2xl text-amber-300 transition active:bg-amber-500/20"
+        className="flex h-12 w-12 items-center justify-center rounded-r-2xl text-[#F2C572] transition hover:bg-[#C17F3E]/10 active:bg-[#C17F3E]/20"
       >
         <Plus size={18} strokeWidth={3} />
       </button>
@@ -426,10 +428,10 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
     : undefined
 
   return (
-    <main className="min-h-screen bg-[#0b0908] pb-36 text-[#f8f3ee] selection:bg-amber-500/30 sm:pb-16">
+    <main className="min-h-screen bg-[#160B07] pb-36 text-[#FAF7F2] selection:bg-[#C17F3E]/30 sm:pb-16">
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute -left-32 top-48 h-80 w-80 rounded-full bg-amber-600/10 blur-[100px]" />
-        <div className="absolute -right-40 top-[42rem] h-96 w-96 rounded-full bg-orange-900/10 blur-[120px]" />
+        <div className="absolute -left-32 top-48 h-80 w-80 rounded-full bg-[#C17F3E]/10 blur-[100px]" />
+        <div className="absolute -right-40 top-[42rem] h-96 w-96 rounded-full bg-[#7B9E6B]/10 blur-[120px]" />
       </div>
 
       <div className="relative mx-auto max-w-5xl">
@@ -439,8 +441,19 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_20%,rgba(245,158,11,0.28),transparent_35%),linear-gradient(145deg,#302018,#110d0b_70%)]" />
             )}
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0b0908] via-[#0b0908]/55 to-black/10" />
-          <div className="relative flex min-h-[20rem] flex-col justify-end px-4 pb-8 pt-20 sm:px-8">
+          <div className="absolute inset-0 bg-gradient-to-t from-[#160B07] via-[#160B07]/55 to-black/10" />
+          <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 px-4 py-4 sm:px-6">
+            <Link href="/" aria-label="Tavero home" className="text-white">
+              <TaveroBrand compact inverse />
+            </Link>
+            <Link
+              href="/cafes"
+              className="rounded-xl border border-white/15 bg-black/20 px-3 py-2 text-xs font-black text-white/70 backdrop-blur-xl transition hover:border-[#F2C572]/30 hover:text-white"
+            >
+              Explore cafes
+            </Link>
+          </div>
+          <div className="relative flex min-h-[20rem] flex-col justify-end px-4 pb-8 pt-24 sm:px-8">
             <div className="mb-4 flex items-center gap-3">
               <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-2xl border border-white/20 bg-black/30 shadow-xl backdrop-blur-xl">
                 {cafe.logoUrl ? (
@@ -449,7 +462,7 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
                     style={{ backgroundImage: `url("${cafe.logoUrl}")` }}
                   />
                 ) : (
-                  <ChefHat className="text-amber-300" size={28} />
+                  <ChefHat className="text-[#F2C572]" size={28} />
                 )}
               </div>
               <div className="rounded-full border border-emerald-300/20 bg-emerald-500/10 px-3 py-1.5 text-xs font-bold text-emerald-300 backdrop-blur-xl">
@@ -457,7 +470,7 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
                 Open for table orders
               </div>
             </div>
-            <p className="mb-2 text-xs font-black uppercase tracking-[0.28em] text-amber-300">
+            <p className="mb-2 text-xs font-black uppercase tracking-[0.28em] text-[#F2C572]">
               Scan · Pick a table · Order
             </p>
             <h1 className="font-display text-4xl font-black leading-none sm:text-6xl">
@@ -471,13 +484,13 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
             <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs font-medium text-zinc-300 sm:text-sm">
               {location && (
                 <span className="flex items-center gap-1.5">
-                  <MapPin size={15} className="text-amber-400" />
+                  <MapPin size={15} className="text-[#C17F3E]" />
                   {location}
                 </span>
               )}
               {cafe.phone && (
                 <span className="flex items-center gap-1.5">
-                  <Phone size={14} className="text-amber-400" />
+                  <Phone size={14} className="text-[#C17F3E]" />
                   {cafe.phone}
                 </span>
               )}
@@ -511,9 +524,9 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
             </section>
           )}
 
-          <section className="relative -mt-4 rounded-[1.75rem] border border-white/10 bg-[#171311]/95 p-4 shadow-2xl backdrop-blur-xl sm:mx-4 sm:p-5">
+          <section className="relative -mt-4 rounded-[1.75rem] border border-white/10 bg-[#211510]/95 p-4 shadow-2xl backdrop-blur-xl sm:mx-4 sm:p-5">
             <div className="flex items-start gap-3">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-300">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#C17F3E]/10 text-[#F2C572]">
                 <UtensilsCrossed size={21} />
               </div>
               <div className="min-w-0 flex-1">
@@ -532,7 +545,7 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
                   id="table"
                   value={selectedTableId}
                   onChange={(event) => selectTable(event.target.value)}
-                  className="min-h-14 w-full appearance-none rounded-2xl border border-white/10 bg-[#0e0b0a] px-4 pr-12 text-base font-bold text-white shadow-inner transition focus:border-amber-400/60"
+                  className="tavero-input-dark min-h-14 appearance-none pr-12 text-base font-bold shadow-inner"
                 >
                   {tables.map((table) => (
                     <option key={table.id} value={table.id}>
@@ -542,7 +555,7 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
                 </select>
                 <ChevronDown
                   size={20}
-                  className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-amber-300"
+                  className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#F2C572]"
                 />
               </div>
             ) : (
@@ -557,7 +570,7 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
 
           {visibleCategories.length > 0 && (
             <nav
-              className="sticky top-0 z-30 -mx-4 mt-5 border-y border-white/[0.06] bg-[#0b0908]/90 px-4 py-3 backdrop-blur-2xl sm:mx-0 sm:rounded-2xl sm:border"
+              className="sticky top-0 z-30 -mx-4 mt-5 border-y border-white/[0.06] bg-[#160B07]/90 px-4 py-3 backdrop-blur-2xl sm:mx-0 sm:rounded-2xl sm:border"
               aria-label="Menu categories"
             >
               <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -565,7 +578,7 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
                   <a
                     key={category.id}
                     href={`#category-${category.id}`}
-                    className="shrink-0 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-bold text-zinc-300 transition hover:border-amber-400/40 hover:text-amber-300"
+                    className="shrink-0 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-bold text-white/65 transition hover:-translate-y-0.5 hover:border-[#F2C572]/40 hover:text-[#F2C572]"
                   >
                     {category.name}
                   </a>
@@ -613,8 +626,8 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
                       return (
                         <article
                           key={item.id}
-                          className={`relative overflow-hidden rounded-[1.75rem] border bg-[#171311] p-4 shadow-[0_12px_40px_rgba(0,0,0,0.18)] transition ${
-                            quantity > 0 ? 'border-amber-400/35' : 'border-white/[0.07]'
+                          className={`tavero-hover-lift relative overflow-hidden rounded-[1.75rem] border bg-[#211510] p-4 shadow-[0_12px_40px_rgba(0,0,0,0.18)] ${
+                            quantity > 0 ? 'border-[#F2C572]/35' : 'border-white/[0.07]'
                           }`}
                         >
                           {item.imageUrl && (
@@ -634,7 +647,7 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
                                 {food.label}
                               </span>
                               {item.isRecommended && (
-                                <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-1 text-amber-300">
+                                <span className="inline-flex items-center gap-1 rounded-full bg-[#C17F3E]/10 px-2 py-1 text-[#F2C572]">
                                   <Sparkles size={11} />
                                   Popular
                                 </span>
@@ -655,7 +668,7 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
                             )}
 
                             <div className="mt-auto flex items-end justify-between gap-3 pt-5">
-                              <p className="text-lg font-black text-amber-300">
+                              <p className="text-lg font-black text-[#F2C572]">
                                 {formatPrice(item.priceInPaise, cafe.currency)}
                               </p>
                               <QuantityControl
@@ -676,11 +689,11 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
 
           <section
             ref={checkoutRef}
-            className="mt-12 overflow-hidden rounded-[2rem] border border-white/[0.08] bg-[#171311]"
+            className="mt-12 overflow-hidden rounded-[1.8rem] border border-white/[0.08] bg-[#211510]"
           >
             <div className="border-b border-white/[0.07] p-5 sm:p-6">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-300">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#C17F3E]/10 text-[#F2C572]">
                   <Leaf size={21} />
                 </div>
                 <div>

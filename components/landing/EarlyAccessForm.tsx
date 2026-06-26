@@ -36,7 +36,7 @@ export function EarlyAccessForm() {
   return (
     <form
       onSubmit={submit}
-      className="rounded-[2rem] border border-[#5a3a27]/10 bg-white p-5 shadow-[0_24px_70px_rgba(72,43,25,0.11)] sm:p-7"
+      className="tavero-surface-light p-5 sm:p-7"
     >
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
@@ -46,7 +46,7 @@ export function EarlyAccessForm() {
             onChange={(event) => updateField('cafeName', event.target.value)}
             required
             maxLength={120}
-            className="min-h-13 w-full rounded-2xl border border-[#4a2e1d]/10 bg-[#faf6ee] px-4 text-sm text-[#33231a] outline-none transition focus:border-[#b77531]/50"
+            className="tavero-input-light min-h-13 text-sm"
             placeholder="Your cafe"
           />
         </label>
@@ -57,7 +57,7 @@ export function EarlyAccessForm() {
             onChange={(event) => updateField('ownerName', event.target.value)}
             required
             maxLength={120}
-            className="min-h-13 w-full rounded-2xl border border-[#4a2e1d]/10 bg-[#faf6ee] px-4 text-sm text-[#33231a] outline-none transition focus:border-[#b77531]/50"
+            className="tavero-input-light min-h-13 text-sm"
             placeholder="Your name"
           />
         </label>
@@ -68,7 +68,7 @@ export function EarlyAccessForm() {
             onChange={(event) => updateField('contact', event.target.value)}
             required
             maxLength={160}
-            className="min-h-13 w-full rounded-2xl border border-[#4a2e1d]/10 bg-[#faf6ee] px-4 text-sm text-[#33231a] outline-none transition focus:border-[#b77531]/50"
+            className="tavero-input-light min-h-13 text-sm"
             placeholder="How should we reach you?"
           />
         </label>
@@ -79,7 +79,7 @@ export function EarlyAccessForm() {
             onChange={(event) => updateField('location', event.target.value)}
             required
             maxLength={160}
-            className="min-h-13 w-full rounded-2xl border border-[#4a2e1d]/10 bg-[#faf6ee] px-4 text-sm text-[#33231a] outline-none transition focus:border-[#b77531]/50"
+            className="tavero-input-light min-h-13 text-sm"
             placeholder="Neighbourhood or city"
           />
         </label>
@@ -91,14 +91,14 @@ export function EarlyAccessForm() {
           onChange={(event) => updateField('note', event.target.value)}
           maxLength={600}
           rows={3}
-          className="w-full resize-none rounded-2xl border border-[#4a2e1d]/10 bg-[#faf6ee] px-4 py-3 text-sm text-[#33231a] outline-none transition focus:border-[#b77531]/50"
+          className="tavero-input-light resize-none py-3 text-sm"
           placeholder="Tell us what you want to improve"
         />
       </label>
 
       {submitted && (
         <div
-          className="mt-4 flex items-start gap-3 rounded-2xl border border-[#75966d]/20 bg-[#75966d]/10 p-4 text-sm leading-6 text-[#365033]"
+          className="tavero-success-enter mt-4 flex items-start gap-3 rounded-2xl border border-[#7B9E6B]/25 bg-[#7B9E6B]/10 p-4 text-sm leading-6 text-[#254334]"
           role="status"
         >
           <CheckCircle2 size={19} className="mt-0.5 shrink-0" />
@@ -111,7 +111,7 @@ export function EarlyAccessForm() {
 
       <button
         type="submit"
-        className="mt-5 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[#392117] px-5 font-black text-[#fff7e9] transition hover:bg-[#4b2a1b]"
+        className="tavero-button-dark tavero-cta-shine mt-5 min-h-14 w-full"
       >
         Request Early Access
         <Send size={17} />

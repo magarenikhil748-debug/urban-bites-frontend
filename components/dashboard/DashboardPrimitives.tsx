@@ -15,7 +15,7 @@ export function DashboardPageHeader({
   return (
     <section className="flex flex-col justify-between gap-5 xl:flex-row xl:items-end">
       <div>
-        <p className="text-xs font-black uppercase tracking-[0.23em] text-[#e8b968]">{eyebrow}</p>
+        <p className="text-xs font-black uppercase tracking-[0.23em] text-[#F2C572]">{eyebrow}</p>
         <h1 className="mt-2 font-display text-4xl font-bold leading-tight sm:text-5xl">{title}</h1>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-white/42 sm:text-base">{description}</p>
       </div>
@@ -46,7 +46,7 @@ export function DashboardStatCard({
   }
 
   return (
-    <article className="rounded-[1.6rem] border border-white/[0.07] bg-[#111a16] p-5 shadow-xl shadow-black/10">
+    <article className="tavero-hover-lift rounded-[1.6rem] border border-white/[0.07] bg-[#111a16] p-5 shadow-xl shadow-black/10">
       <div className={`flex h-11 w-11 items-center justify-center rounded-2xl ${tones[tone]}`}>
         <Icon size={20} />
       </div>
@@ -64,7 +64,7 @@ export function DashboardLoading({ label = 'Loading workspace' }: { label?: stri
       aria-label={label}
       aria-busy="true"
     >
-      <Loader2 size={26} className="animate-spin text-[#e8b968]" />
+      <Loader2 size={26} className="animate-spin text-[#F2C572]" />
     </div>
   )
 }

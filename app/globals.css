@@ -5,14 +5,26 @@
 
 /* ── Custom properties ───────────────────────── */
 :root {
-  /* Warm amber brand accent */
-  --brand-primary: #d4791a;
-  --brand-glow: rgba(212, 121, 26, 0.4);
+  --tavero-espresso: #2c1810;
+  --tavero-espresso-dark: #160b07;
+  --tavero-cream: #faf7f2;
+  --tavero-cream-muted: #efe7da;
+  --tavero-caramel: #c17f3e;
+  --tavero-caramel-light: #f2c572;
+  --tavero-matcha: #7b9e6b;
+  --tavero-matcha-dark: #254334;
+  --tavero-charcoal: #2d2d2d;
+  --tavero-gold: #d4a853;
+  --tavero-danger: #7f1d1d;
+  --tavero-success: #166534;
+
+  --brand-primary: var(--tavero-caramel);
+  --brand-glow: rgba(193, 127, 62, 0.32);
 
   /* Background depth stack */
-  --bg-base: #0f0b09;
-  --bg-surface: #1a1210;
-  --bg-overlay: rgba(26, 18, 16, 0.85);
+  --bg-base: var(--tavero-espresso-dark);
+  --bg-surface: #211510;
+  --bg-overlay: rgba(22, 11, 7, 0.88);
 
   /* Glass surface */
   --glass-bg: rgba(255, 255, 255, 0.04);
@@ -149,14 +161,259 @@ body {
 
 /* ── Focus ring for accessibility ────────────── */
 :focus-visible {
-  outline: 2px solid var(--brand-primary);
+  outline: 2px solid var(--tavero-caramel-light);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: 0.75rem;
 }
 
 @layer components {
+  .tavero-surface-light {
+    @apply rounded-[1.8rem] border border-[#2C1810]/[0.08] bg-white shadow-[0_18px_55px_rgba(44,24,16,0.08)];
+  }
+
+  .tavero-surface-dark {
+    @apply rounded-[1.8rem] border border-white/[0.07] bg-[#111a16] shadow-xl shadow-black/10;
+  }
+
+  .tavero-button-primary {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-[#F2C572] px-5 font-black text-[#2C1810] transition duration-300 hover:-translate-y-0.5 hover:bg-[#f6d28a] hover:shadow-[0_14px_35px_rgba(193,127,62,0.28)] active:translate-y-0;
+  }
+
+  .tavero-button-dark {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-[#2C1810] px-5 font-black text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#3b2117] hover:shadow-[0_14px_35px_rgba(44,24,16,0.22)] active:translate-y-0;
+  }
+
+  .tavero-button-ghost-dark {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-5 font-black text-white/70 transition duration-300 hover:-translate-y-0.5 hover:border-[#F2C572]/30 hover:bg-white/[0.07] hover:text-white active:translate-y-0;
+  }
+
+  .tavero-chip {
+    @apply rounded-full border border-[#2C1810]/10 bg-white/70 px-4 py-2.5 text-xs font-black text-[#654d40] transition duration-300;
+  }
+
+  .tavero-input-light {
+    @apply w-full rounded-2xl border border-[#2C1810]/10 bg-[#FAF7F2] px-4 text-[#2D2D2D] outline-none transition duration-300 placeholder:text-[#2D2D2D]/35 focus:border-[#C17F3E]/60 focus:bg-white focus:shadow-[0_0_0_4px_rgba(193,127,62,0.1)];
+  }
+
+  .tavero-input-dark {
+    @apply w-full rounded-2xl border border-white/10 bg-black/20 px-4 text-white outline-none transition duration-300 placeholder:text-white/20 focus:border-[#F2C572]/60 focus:shadow-[0_0_0_4px_rgba(242,197,114,0.08)];
+  }
+
   .dashboard-input {
-    @apply min-h-12 w-full rounded-xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none transition placeholder:text-white/20 focus:border-[#e8b968]/60 disabled:cursor-not-allowed disabled:opacity-55;
+    @apply min-h-12 w-full rounded-xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none transition placeholder:text-white/20 focus:border-[#F2C572]/60 focus:shadow-[0_0_0_4px_rgba(242,197,114,0.08)] disabled:cursor-not-allowed disabled:opacity-55;
+  }
+}
+
+.tavero-landing article,
+.tavero-hover-lift {
+  transition:
+    transform 300ms ease,
+    border-color 300ms ease,
+    box-shadow 300ms ease,
+    background-color 300ms ease;
+}
+
+.tavero-nav-link {
+  position: relative;
+}
+
+.tavero-nav-link::after {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.25rem;
+  left: 0.75rem;
+  height: 1px;
+  content: '';
+  background: var(--tavero-caramel);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 250ms ease;
+}
+
+.tavero-nav-link:hover::after,
+.tavero-nav-link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.tavero-cta-shine {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.tavero-cta-shine::before {
+  position: absolute;
+  inset: -40% auto -40% -35%;
+  z-index: 0;
+  width: 26%;
+  content: '';
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-18deg);
+  transition: left 550ms ease;
+}
+
+.tavero-cta-shine:hover::before,
+.tavero-cta-shine:focus-visible::before {
+  left: 115%;
+}
+
+.tavero-hero-enter {
+  animation: taveroHeroEnter 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.tavero-hero-enter-delay-1 {
+  animation-delay: 100ms;
+}
+
+.tavero-hero-enter-delay-2 {
+  animation-delay: 190ms;
+}
+
+.tavero-preview-card {
+  animation: taveroPreviewFloat 7s ease-in-out infinite;
+  transition:
+    transform 350ms ease,
+    box-shadow 350ms ease;
+}
+
+.tavero-preview-left {
+  --tavero-preview-rotate: -2deg;
+}
+
+.tavero-preview-right {
+  --tavero-preview-rotate: 2deg;
+  animation-delay: -2.5s;
+}
+
+.tavero-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 650ms ease,
+    transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tavero-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tavero-success-enter {
+  animation: taveroSuccessEnter 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.tavero-faq p {
+  animation: taveroFaqEnter 260ms ease both;
+}
+
+.tavero-cursor-aura {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 45;
+  display: none;
+  width: 22.5rem;
+  height: 22.5rem;
+  pointer-events: none;
+  border-radius: 999px;
+  opacity: 0;
+  background: radial-gradient(
+    circle,
+    rgba(242, 197, 114, 0.12),
+    rgba(123, 158, 107, 0.055) 38%,
+    transparent 70%
+  );
+  mix-blend-mode: soft-light;
+  transition: opacity 250ms ease;
+  will-change: transform;
+}
+
+@keyframes taveroHeroEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes taveroPreviewFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--tavero-preview-rotate, 0deg));
+  }
+  50% {
+    transform: translateY(-7px) rotate(var(--tavero-preview-rotate, 0deg));
+  }
+}
+
+@keyframes taveroSuccessEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes taveroFaqEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 900px) and (hover: hover) and (pointer: fine) {
+  .tavero-landing article:hover,
+  .tavero-hover-lift:hover {
+    transform: translateY(-4px);
+    border-color: rgba(193, 127, 62, 0.2);
+    box-shadow: 0 24px 65px rgba(44, 24, 16, 0.12);
+  }
+
+  .tavero-chip:hover {
+    transform: translateY(-2px);
+    border-color: rgba(193, 127, 62, 0.25);
+    background: white;
+    color: var(--tavero-espresso);
+  }
+
+  .tavero-cursor-aura {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .tavero-reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .tavero-cursor-aura {
+    display: none;
   }
 }
 

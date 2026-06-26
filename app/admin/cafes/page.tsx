@@ -137,7 +137,7 @@ export default function AdminCafesPage() {
         <button
           type="button"
           onClick={() => void load()}
-          className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/10 px-4 text-sm font-black text-white/60 transition hover:border-[#e8b968]/30 hover:text-[#e8b968]"
+          className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/10 px-4 text-sm font-black text-white/60 transition hover:-translate-y-0.5 hover:border-[#F2C572]/30 hover:text-[#F2C572]"
         >
           <RefreshCw size={15} /> Refresh
         </button>
@@ -171,7 +171,7 @@ export default function AdminCafesPage() {
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search cafe, slug, city, or owner"
-            className="min-h-12 w-full rounded-xl border border-white/[0.07] bg-black/20 pl-11 pr-4 text-sm outline-none transition focus:border-[#e8b968]/50"
+            className="tavero-input-dark min-h-12 rounded-xl pl-11 pr-4 text-sm"
           />
         </div>
         <div className="flex gap-2 overflow-x-auto">
@@ -182,7 +182,7 @@ export default function AdminCafesPage() {
               onClick={() => setFilter(item)}
               className={`min-h-12 shrink-0 rounded-xl px-4 text-xs font-black ${
                 filter === item
-                  ? 'bg-[#e8b968] text-[#17251f]'
+                  ? 'bg-[#F2C572] text-[#254334]'
                   : 'border border-white/10 text-white/45 transition hover:border-white/20 hover:text-white/70'
               }`}
             >
@@ -204,7 +204,7 @@ export default function AdminCafesPage() {
       )}
 
       {loading ? (
-        <div className="flex min-h-72 items-center justify-center text-[#e8b968]">
+        <div className="flex min-h-72 items-center justify-center text-[#F2C572]">
           <Loader2 size={27} className="animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
@@ -230,7 +230,7 @@ export default function AdminCafesPage() {
                         aria-label={cafe.name}
                       />
                     ) : (
-                      <div className="flex h-full min-h-40 items-center justify-center text-[#e8b968]/35">
+                      <div className="flex h-full min-h-40 items-center justify-center text-[#F2C572]/35">
                         <Store size={38} />
                       </div>
                     )}
@@ -245,7 +245,7 @@ export default function AdminCafesPage() {
                         <span
                           className={`rounded-full px-2.5 py-1 text-[10px] font-black ${
                             cafe.isApproved
-                              ? 'bg-[#75966d]/15 text-[#b9d5b2]'
+                              ? 'bg-[#7B9E6B]/15 text-[#c3dbbc]'
                               : 'bg-amber-400/10 text-amber-300'
                           }`}
                         >
@@ -254,7 +254,7 @@ export default function AdminCafesPage() {
                         <span
                           className={`rounded-full px-2.5 py-1 text-[10px] font-black ${
                             cafe.isActive
-                              ? 'bg-[#75966d]/15 text-[#b9d5b2]'
+                              ? 'bg-[#7B9E6B]/15 text-[#c3dbbc]'
                               : 'bg-rose-400/10 text-rose-300'
                           }`}
                         >
@@ -297,7 +297,7 @@ export default function AdminCafesPage() {
                         className={`flex min-h-10 items-center gap-2 rounded-xl px-3 text-xs font-black disabled:opacity-50 ${
                           cafe.isActive
                             ? 'border border-rose-300/20 text-rose-200'
-                            : 'bg-[#e8b968] text-[#17251f]'
+                            : 'bg-[#F2C572] text-[#254334]'
                         }`}
                       >
                         {cafe.isActive ? <PauseCircle size={14} /> : <PlayCircle size={14} />}
@@ -306,7 +306,7 @@ export default function AdminCafesPage() {
                       <Link
                         href={`/cafe/${cafe.slug}`}
                         target="_blank"
-                        className="flex min-h-10 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-black text-white/45 transition hover:border-[#e8b968]/30 hover:text-[#e8b968]"
+                        className="flex min-h-10 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-black text-white/45 transition hover:border-[#F2C572]/30 hover:text-[#F2C572]"
                       >
                         Public page <ExternalLink size={13} />
                       </Link>

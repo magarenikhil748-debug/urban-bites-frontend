@@ -10,7 +10,7 @@ export function MarketplaceLoading({ cards = 3 }: { cards?: number }) {
       {Array.from({ length: cards }, (_, index) => (
         <div
           key={index}
-          className="overflow-hidden rounded-[2rem] border border-stone-900/[0.06] bg-white"
+        className="overflow-hidden rounded-[1.8rem] border border-[#2C1810]/[0.06] bg-white"
         >
           <div className="skeleton h-56" />
           <div className="space-y-3 p-5">
@@ -38,7 +38,7 @@ export function MarketplaceError({ message, onRetry }: { message: string; onRetr
       <button
         type="button"
         onClick={onRetry}
-        className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#1b2b25] px-5 text-sm font-black text-white"
+        className="tavero-button-dark mt-6 min-h-11 rounded-xl text-sm"
       >
         <RefreshCw size={16} />
         Try again
@@ -55,8 +55,8 @@ export function MarketplaceEmpty({
   description?: string
 }) {
   return (
-    <div className="rounded-[2rem] border border-dashed border-stone-900/10 bg-white/50 px-6 py-14 text-center">
-      <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#1b2b25]/5 text-[#1b2b25]">
+    <div className="rounded-[1.8rem] border border-dashed border-[#2C1810]/10 bg-white/50 px-6 py-14 text-center">
+      <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#254334]/5 text-[#254334]">
         <Coffee size={28} />
       </span>
       <h2 className="mt-5 text-xl font-black text-stone-900">{title}</h2>

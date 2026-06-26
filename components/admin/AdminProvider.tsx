@@ -49,13 +49,13 @@ function AdminLogin({ onAuthenticated }: { onAuthenticated: (session: DashboardS
 
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#09100d] px-4 py-10 text-white">
-      <div className="pointer-events-none absolute -left-28 top-0 h-80 w-80 rounded-full bg-[#e8b968]/10 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-40 right-0 h-96 w-96 rounded-full bg-[#75966d]/10 blur-3xl" />
+      <div className="pointer-events-none absolute -left-28 top-0 h-80 w-80 rounded-full bg-[#C17F3E]/10 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-40 right-0 h-96 w-96 rounded-full bg-[#7B9E6B]/10 blur-3xl" />
       <section className="relative w-full max-w-md rounded-[2rem] border border-white/10 bg-[#111a16]/95 p-6 shadow-2xl shadow-black/30 backdrop-blur sm:p-8">
-        <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#e8b968] text-[#17251f] shadow-lg shadow-black/20">
+        <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F2C572] text-[#254334] shadow-lg shadow-black/20">
           <ShieldCheck size={25} />
         </span>
-        <p className="mt-6 text-xs font-black uppercase tracking-[0.23em] text-[#e8b968]">
+        <p className="mt-6 text-xs font-black uppercase tracking-[0.23em] text-[#F2C572]">
           Platform control
         </p>
         <h1 className="mt-2 font-display text-4xl font-bold">Admin sign in</h1>
@@ -73,7 +73,7 @@ function AdminLogin({ onAuthenticated }: { onAuthenticated: (session: DashboardS
               onChange={(event) => setEmail(event.target.value)}
               autoComplete="email"
               required
-              className="min-h-14 w-full rounded-2xl border border-white/10 bg-black/20 px-4 outline-none transition focus:border-[#e8b968]/60"
+              className="tavero-input-dark min-h-14"
             />
           </label>
           <label className="block">
@@ -84,7 +84,7 @@ function AdminLogin({ onAuthenticated }: { onAuthenticated: (session: DashboardS
               onChange={(event) => setPassword(event.target.value)}
               autoComplete="current-password"
               required
-              className="min-h-14 w-full rounded-2xl border border-white/10 bg-black/20 px-4 outline-none transition focus:border-[#e8b968]/60"
+              className="tavero-input-dark min-h-14"
             />
           </label>
           {error && (
@@ -95,7 +95,7 @@ function AdminLogin({ onAuthenticated }: { onAuthenticated: (session: DashboardS
           <button
             type="submit"
             disabled={submitting}
-            className="flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[#e8b968] px-5 font-black text-[#17251f] transition hover:bg-[#f2cd8c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#e8b968] disabled:opacity-60"
+            className="tavero-button-primary min-h-14 w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F2C572] disabled:opacity-60"
           >
             {submitting ? (
               <Loader2 size={19} className="animate-spin" />
@@ -130,7 +130,7 @@ function Unauthorized({ session, logout }: { session: DashboardSession; logout: 
           <button
             type="button"
             onClick={logout}
-            className="min-h-12 rounded-2xl bg-[#e8b968] px-5 text-sm font-black text-[#17251f] transition hover:bg-[#f2cd8c]"
+            className="tavero-button-primary min-h-12 text-sm"
           >
             Sign out
           </button>
@@ -171,7 +171,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
   if (restoring) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#09100d] text-[#e8b968]">
+      <main className="flex min-h-screen items-center justify-center bg-[#09100d] text-[#F2C572]">
         <Loader2 size={28} className="animate-spin" aria-label="Restoring admin session" />
       </main>
     )

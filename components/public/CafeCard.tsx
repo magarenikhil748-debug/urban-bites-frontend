@@ -6,7 +6,7 @@ export function CafeCard({ cafe, menuItemCount }: { cafe: PublicCafe; menuItemCo
   const location = cafeLocation(cafe)
 
   return (
-    <article className="group overflow-hidden rounded-[2rem] border border-stone-900/[0.07] bg-white shadow-[0_18px_55px_rgba(44,34,24,0.08)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_28px_70px_rgba(44,34,24,0.14)]">
+    <article className="tavero-hover-lift group overflow-hidden rounded-[1.8rem] border border-[#2C1810]/[0.07] bg-white shadow-[0_18px_55px_rgba(44,24,16,0.08)]">
       <Link href={`/cafe/${cafe.slug}`} className="relative block h-60 overflow-hidden">
         {cafe.imageUrl ? (
           <div
@@ -44,7 +44,7 @@ export function CafeCard({ cafe, menuItemCount }: { cafe: PublicCafe; menuItemCo
 
         {menuItemCount > 0 && (
           <p className="mt-4 flex items-center gap-2 text-xs font-bold text-stone-500">
-            <BookOpen size={15} className="text-[#b87924]" />
+            <BookOpen size={15} className="text-[#C17F3E]" />
             {menuItemCount} menu item{menuItemCount === 1 ? '' : 's'} currently available
           </p>
         )}
@@ -52,14 +52,14 @@ export function CafeCard({ cafe, menuItemCount }: { cafe: PublicCafe; menuItemCo
         <div className="mt-5 grid grid-cols-2 gap-2.5">
           <Link
             href={`/cafe/${cafe.slug}`}
-            className="flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-stone-900/10 bg-[#f7f4ed] text-sm font-black text-[#1b2b25] transition hover:border-[#1b2b25]/30"
+            className="flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-[#2C1810]/10 bg-[#FAF7F2] text-sm font-black text-[#254334] transition hover:-translate-y-0.5 hover:border-[#C17F3E]/35"
           >
             View cafe
             <ArrowRight size={16} />
           </Link>
           <Link
             href={`/cafe/${cafe.slug}/menu`}
-            className="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-[#1b2b25] text-sm font-black text-white transition hover:bg-[#263d34]"
+            className="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-[#254334] text-sm font-black text-white transition hover:-translate-y-0.5 hover:bg-[#315744]"
           >
             <UtensilsCrossed size={16} />
             {menuItemCount > 0 ? 'View menu' : 'Cafe menu'}

@@ -31,6 +31,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { TaveroBrand } from '@/components/brand/TaveroBrand'
 import { EarlyAccessForm } from './EarlyAccessForm'
+import { LandingEffects } from './LandingEffects'
 
 const discoveryChips = [
   'Date Cafes',
@@ -159,7 +160,7 @@ function SectionHeading({
 function HeroPreview() {
   return (
     <div className="relative mx-auto min-h-[35rem] w-full max-w-2xl lg:min-h-[40rem]">
-      <div className="absolute left-0 top-5 w-[78%] max-w-[23rem] -rotate-2 rounded-[2.2rem] border border-white/10 bg-[#f7f0e4] p-3 text-[#35241b] shadow-2xl shadow-black/30 sm:left-5">
+      <div className="tavero-preview-card tavero-preview-left absolute left-0 top-5 w-[78%] max-w-[23rem] rounded-[2.2rem] border border-white/10 bg-[#f7f0e4] p-3 text-[#35241b] shadow-2xl shadow-black/30 sm:left-5">
         <div className="rounded-[1.7rem] bg-white p-4">
           <div className="flex items-center justify-between">
             <div>
@@ -205,7 +206,7 @@ function HeroPreview() {
         </div>
       </div>
 
-      <div className="absolute bottom-3 right-0 w-[75%] max-w-[24rem] rotate-2 rounded-[2.2rem] border border-white/10 bg-[#15221d] p-4 text-white shadow-2xl shadow-black/35">
+      <div className="tavero-preview-card tavero-preview-right absolute bottom-3 right-0 w-[75%] max-w-[24rem] rounded-[2.2rem] border border-white/10 bg-[#15221d] p-4 text-white shadow-2xl shadow-black/35">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#f0c57a]">
@@ -252,8 +253,12 @@ export function TaveroLandingPage() {
   const closeMobile = () => setMobileOpen(false)
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#fbf7ef] text-[#33231a]">
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-[#3b281c]/10 bg-[#fbf7ef] shadow-sm">
+    <main
+      className="tavero-landing min-h-screen overflow-hidden bg-[#FAF7F2] text-[#2D2D2D]"
+      data-tavero-landing
+    >
+      <LandingEffects />
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-[#2C1810]/10 bg-[#FAF7F2]/95 shadow-sm backdrop-blur-xl">
         <div className="mx-auto flex min-h-[4.75rem] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link href="/" aria-label="Tavero home" onClick={closeMobile}>
             <TaveroBrand compact />
@@ -270,20 +275,20 @@ export function TaveroLandingPage() {
               <Link
                 key={href}
                 href={href}
-                className="rounded-xl px-3 py-2 text-sm font-bold text-[#654f42] transition hover:bg-[#efe4d5] hover:text-[#392117]"
+                className="tavero-nav-link rounded-xl px-3 py-2 text-sm font-bold text-[#654f42] transition hover:bg-[#EFE7DA] hover:text-[#2C1810]"
               >
                 {label}
               </Link>
             ))}
             <Link
               href="/admin/cafes"
-              className="ml-1 rounded-xl px-3 py-2 text-xs font-black text-[#8d7567] hover:text-[#392117]"
+              className="tavero-nav-link ml-1 rounded-xl px-3 py-2 text-xs font-black text-[#8d7567] hover:text-[#2C1810]"
             >
               Admin
             </Link>
             <Link
               href="#early-access"
-              className="ml-2 flex min-h-11 items-center rounded-2xl bg-[#392117] px-5 text-sm font-black text-[#fff8ec] transition hover:bg-[#4b2a1b]"
+              className="tavero-cta-shine ml-2 flex min-h-11 items-center rounded-2xl bg-[#2C1810] px-5 text-sm font-black text-[#fff8ec] transition hover:-translate-y-0.5 hover:bg-[#3b2117]"
             >
               List Your Cafe
             </Link>
@@ -291,7 +296,7 @@ export function TaveroLandingPage() {
           <button
             type="button"
             onClick={() => setMobileOpen((current) => !current)}
-            className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#3b281c]/10 bg-white text-[#392117] lg:hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#2C1810]/10 bg-white text-[#2C1810] transition hover:border-[#C17F3E]/30 hover:bg-[#EFE7DA] lg:hidden"
             aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={mobileOpen}
           >
@@ -300,7 +305,7 @@ export function TaveroLandingPage() {
         </div>
         {mobileOpen && (
           <nav
-            className="border-t border-[#3b281c]/10 bg-[#fbf7ef] px-4 py-4 lg:hidden"
+            className="border-t border-[#2C1810]/10 bg-[#FAF7F2] px-4 py-4 shadow-xl lg:hidden"
             aria-label="Mobile navigation"
           >
             <div className="mx-auto grid max-w-7xl gap-1">
@@ -317,7 +322,7 @@ export function TaveroLandingPage() {
                   key={href}
                   href={href}
                   onClick={closeMobile}
-                  className="min-h-11 rounded-xl px-3 py-3 text-sm font-black text-[#594236] hover:bg-[#efe4d5]"
+                  className="min-h-11 rounded-xl px-3 py-3 text-sm font-black text-[#594236] transition hover:bg-[#EFE7DA]"
                 >
                   {label}
                 </Link>
@@ -325,7 +330,7 @@ export function TaveroLandingPage() {
               <Link
                 href="#early-access"
                 onClick={closeMobile}
-                className="mt-2 flex min-h-12 items-center justify-center rounded-2xl bg-[#392117] px-5 text-sm font-black text-white"
+                className="tavero-cta-shine mt-2 flex min-h-12 items-center justify-center rounded-2xl bg-[#2C1810] px-5 text-sm font-black text-white"
               >
                 List Your Cafe
               </Link>
@@ -340,15 +345,15 @@ export function TaveroLandingPage() {
         <div className="absolute -right-32 top-24 h-[30rem] w-[30rem] rounded-full border border-white/[0.05]" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8">
           <div>
-            <p className="inline-flex items-center gap-2 rounded-full border border-[#f0c57a]/20 bg-[#f0c57a]/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#f7dca9]">
+            <p className="tavero-hero-enter inline-flex items-center gap-2 rounded-full border border-[#F2C572]/20 bg-[#F2C572]/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#f7dca9]">
               <Sparkles size={13} />
               Built for modern cafe discovery and service
             </p>
-            <h1 className="mt-7 max-w-4xl font-display text-5xl font-bold leading-[0.96] tracking-[-0.045em] sm:text-6xl lg:text-7xl">
+            <h1 className="tavero-hero-enter tavero-hero-enter-delay-1 mt-7 max-w-4xl font-display text-5xl font-bold leading-[0.96] tracking-[-0.045em] sm:text-6xl lg:text-7xl">
               Turn cafe discovery into
               <span className="block text-[#f0c57a]">real customers.</span>
             </h1>
-            <p className="mt-6 max-w-2xl text-base leading-7 text-white/68 sm:text-lg">
+            <p className="tavero-hero-enter tavero-hero-enter-delay-2 mt-6 max-w-2xl text-base leading-7 text-white/68 sm:text-lg">
               Tavero helps people discover cafes by vibe, occasion, and menu — then scan, select a
               table, and order without downloading an app.
             </p>
@@ -359,13 +364,13 @@ export function TaveroLandingPage() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="#early-access"
-                className="flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#f0c57a] px-6 font-black text-[#321d13] transition hover:bg-[#f7d99f]"
+                className="tavero-cta-shine flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#F2C572] px-6 font-black text-[#2C1810] transition hover:-translate-y-0.5 hover:bg-[#f7d99f] hover:shadow-[0_16px_40px_rgba(193,127,62,0.3)]"
               >
                 List Your Cafe <ArrowRight size={17} />
               </Link>
               <Link
                 href="/cafes"
-                className="flex min-h-14 items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/[0.06] px-6 font-black text-white backdrop-blur-xl transition hover:bg-white/10"
+                className="flex min-h-14 items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/[0.06] px-6 font-black text-white backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-[#F2C572]/30 hover:bg-white/10"
               >
                 <Compass size={18} />
                 Explore Cafes
@@ -388,7 +393,7 @@ export function TaveroLandingPage() {
           {discoveryChips.map((chip) => (
             <span
               key={chip}
-              className="shrink-0 rounded-full border border-[#563824]/10 bg-white/65 px-4 py-2.5 text-xs font-black text-[#634a3c]"
+              className="tavero-chip shrink-0"
             >
               {chip}
             </span>
@@ -396,7 +401,10 @@ export function TaveroLandingPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+      <section
+        className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28"
+        data-tavero-reveal
+      >
         <SectionHeading
           eyebrow="The gap cafe owners feel"
           title="Cafes are visible everywhere, but customers still slip away."
@@ -449,7 +457,11 @@ export function TaveroLandingPage() {
         </div>
       </section>
 
-      <section id="how-it-works" className="bg-[#e9dfd0] px-4 py-20 sm:px-6 lg:py-28">
+      <section
+        id="how-it-works"
+        className="bg-[#EFE7DA] px-4 py-20 sm:px-6 lg:py-28"
+        data-tavero-reveal
+      >
         <div className="mx-auto max-w-7xl">
           <SectionHeading
             eyebrow="How Tavero works"
@@ -512,7 +524,10 @@ export function TaveroLandingPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+      <section
+        className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28"
+        data-tavero-reveal
+      >
         <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
           <SectionHeading
             eyebrow="Marketplace personality"
@@ -521,7 +536,7 @@ export function TaveroLandingPage() {
           />
           <Link
             href="/cafes"
-            className="flex min-h-12 w-fit items-center gap-2 rounded-2xl bg-[#392117] px-5 text-sm font-black text-white"
+            className="tavero-button-dark tavero-cta-shine w-fit text-sm"
           >
             Explore Tavero Marketplace <ArrowRight size={16} />
           </Link>
@@ -572,7 +587,11 @@ export function TaveroLandingPage() {
         </div>
       </section>
 
-      <section id="owners" className="bg-[#2d1b13] px-4 py-20 text-white sm:px-6 lg:py-28">
+      <section
+        id="owners"
+        className="bg-[#2C1810] px-4 py-20 text-white sm:px-6 lg:py-28"
+        data-tavero-reveal
+      >
         <div className="mx-auto max-w-7xl">
           <SectionHeading
             eyebrow="Live in the MVP"
@@ -615,7 +634,10 @@ export function TaveroLandingPage() {
         </div>
       </section>
 
-      <section className="bg-[#f1e7d9] px-4 py-20 sm:px-6 lg:py-28">
+      <section
+        className="bg-[#EFE7DA] px-4 py-20 sm:px-6 lg:py-28"
+        data-tavero-reveal
+      >
         <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[0.8fr_1.2fr]">
           <SectionHeading
             eyebrow="Tavero Partner"
@@ -696,7 +718,10 @@ export function TaveroLandingPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+      <section
+        className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28"
+        data-tavero-reveal
+      >
         <SectionHeading
           eyebrow="A different role in the cafe stack"
           title="Tavero is not another food app. It is the discovery-to-order layer for cafes."
@@ -748,7 +773,11 @@ export function TaveroLandingPage() {
         </div>
       </section>
 
-      <section id="early-access" className="bg-[#eadfce] px-4 py-20 sm:px-6 lg:py-28">
+      <section
+        id="early-access"
+        className="bg-[#EFE7DA] px-4 py-20 sm:px-6 lg:py-28"
+        data-tavero-reveal
+      >
         <div className="mx-auto max-w-7xl">
           <SectionHeading
             eyebrow="Early cafe network"
@@ -812,7 +841,7 @@ export function TaveroLandingPage() {
                 </div>
                 <Link
                   href="#early-access-form"
-                  className="mt-7 flex min-h-12 items-center justify-center rounded-2xl border border-[#392117]/15 px-4 text-sm font-black text-[#392117]"
+                  className="mt-7 flex min-h-12 items-center justify-center rounded-2xl border border-[#2C1810]/15 px-4 text-sm font-black text-[#2C1810] transition hover:-translate-y-0.5 hover:border-[#C17F3E]/35 hover:bg-white"
                 >
                   Join Early Access
                 </Link>
@@ -859,7 +888,10 @@ export function TaveroLandingPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+      <section
+        className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28"
+        data-tavero-reveal
+      >
         <SectionHeading
           eyebrow="Honest launch proof"
           title="Built for independent cafe pilots, not inflated launch numbers."
@@ -898,7 +930,11 @@ export function TaveroLandingPage() {
         </div>
       </section>
 
-      <section id="faq" className="bg-[#2d1b13] px-4 py-20 text-white sm:px-6 lg:py-28">
+      <section
+        id="faq"
+        className="bg-[#2C1810] px-4 py-20 text-white sm:px-6 lg:py-28"
+        data-tavero-reveal
+      >
         <div className="mx-auto max-w-5xl">
           <SectionHeading
             eyebrow="Questions before the pilot"
@@ -909,7 +945,7 @@ export function TaveroLandingPage() {
             {faqs.map(([question, answer]) => (
               <details
                 key={question}
-                className="group rounded-[1.5rem] border border-white/[0.08] bg-white/[0.045] p-5 open:bg-white/[0.07]"
+                className="tavero-faq group rounded-[1.5rem] border border-white/[0.08] bg-white/[0.045] p-5 transition open:border-[#F2C572]/20 open:bg-white/[0.07]"
               >
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-black">
                   {question}
@@ -925,7 +961,7 @@ export function TaveroLandingPage() {
         </div>
       </section>
 
-      <section className="bg-[#f0c57a] px-4 py-20 sm:px-6">
+      <section className="bg-[#F2C572] px-4 py-20 sm:px-6" data-tavero-reveal>
         <div className="mx-auto max-w-5xl text-center">
           <p className="text-xs font-black uppercase tracking-[0.22em] text-[#81501f]">
             Early partner network
@@ -939,13 +975,13 @@ export function TaveroLandingPage() {
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               href="#early-access"
-              className="flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#392117] px-6 font-black text-white"
+              className="tavero-cta-shine flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#2C1810] px-6 font-black text-white transition hover:-translate-y-0.5 hover:bg-[#3b2117]"
             >
               List Your Cafe <ArrowRight size={17} />
             </Link>
             <Link
               href="/cafes"
-              className="flex min-h-14 items-center justify-center gap-2 rounded-2xl border border-[#392117]/15 bg-white/35 px-6 font-black text-[#392117]"
+              className="flex min-h-14 items-center justify-center gap-2 rounded-2xl border border-[#2C1810]/15 bg-white/35 px-6 font-black text-[#2C1810] transition hover:-translate-y-0.5 hover:bg-white/55"
             >
               Explore Cafes <ExternalLink size={16} />
             </Link>

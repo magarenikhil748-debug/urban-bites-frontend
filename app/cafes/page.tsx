@@ -5,7 +5,6 @@ import {
   ArrowDown,
   ArrowRight,
   BookOpenCheck,
-  Coffee,
   LayoutDashboard,
   QrCode,
   Search,
@@ -14,6 +13,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { CafeCard } from '@/components/public/CafeCard'
+import { TaveroBrand } from '@/components/brand/TaveroBrand'
 import {
   MarketplaceEmpty,
   MarketplaceError,
@@ -106,14 +106,14 @@ export default function CafesMarketplacePage() {
   }, [cafes, search, withMenuOnly])
 
   return (
-    <main className="min-h-screen bg-[#f7f4ed] text-[#17251f]">
-      <section className="relative min-h-[44rem] overflow-hidden bg-[#13231d] text-white">
+    <main className="min-h-screen bg-[#FAF7F2] text-[#254334]">
+      <section className="relative min-h-[44rem] overflow-hidden bg-[#254334] text-white">
         <PublicHeader floating />
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(225,168,78,0.28),transparent_28%),radial-gradient(circle_at_82%_75%,rgba(85,130,108,0.3),transparent_34%)]" />
           <div className="absolute -right-32 top-24 h-[34rem] w-[34rem] rounded-full border border-white/[0.06]" />
           <div className="absolute -right-12 top-44 h-[24rem] w-[24rem] rounded-full border border-white/[0.08]" />
-          <div className="absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-t from-[#f7f4ed] to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-t from-[#FAF7F2] to-transparent" />
         </div>
 
         <div className="relative mx-auto grid min-h-[44rem] max-w-7xl items-center gap-12 px-4 pb-28 pt-32 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
@@ -134,7 +134,7 @@ export default function CafesMarketplacePage() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
                 href="#explore"
-                className="flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#e7bb70] px-6 font-black text-[#17251f] transition hover:bg-[#f0cb8b]"
+                className="tavero-cta-shine flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#F2C572] px-6 font-black text-[#254334] transition hover:-translate-y-0.5 hover:bg-[#f6d28a]"
               >
                 Explore cafes
                 <ArrowDown size={18} />
@@ -239,7 +239,7 @@ export default function CafesMarketplacePage() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search cafes, cities, or descriptions"
-              className="min-h-[3.25rem] w-full rounded-2xl bg-[#f7f4ed] pl-11 pr-4 text-sm font-medium outline-none placeholder:text-stone-400"
+                className="tavero-input-light min-h-[3.25rem] pl-11 pr-4 text-sm font-medium"
             />
           </div>
           <div className="flex gap-2">
@@ -290,7 +290,7 @@ export default function CafesMarketplacePage() {
         </div>
       </section>
 
-      <section id="for-cafes" className="bg-[#e9e2d5] px-4 py-20 sm:px-6">
+      <section id="for-cafes" className="bg-[#EFE7DA] px-4 py-20 sm:px-6">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
             <div>
@@ -307,7 +307,7 @@ export default function CafesMarketplacePage() {
               </p>
               <Link
                 href="/dashboard/orders"
-                className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-2xl bg-[#1b2b25] px-5 text-sm font-black text-white"
+                className="tavero-button-dark tavero-cta-shine mt-7 text-sm"
               >
                 Cafe owner dashboard
                 <ArrowRight size={16} />
@@ -346,15 +346,9 @@ export default function CafesMarketplacePage() {
         </div>
       </section>
 
-      <footer className="bg-[#13231d] px-4 py-8 text-white sm:px-6">
+      <footer className="bg-[#254334] px-4 py-8 text-white sm:px-6">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 sm:flex-row sm:items-center">
-          <div className="flex items-center gap-3">
-            <Coffee size={20} className="text-[#e3b769]" />
-            <div>
-              <p className="text-sm font-black">Tavero Marketplace</p>
-              <p className="text-xs text-white/40">Discover. Scan. Order.</p>
-            </div>
-          </div>
+          <TaveroBrand compact inverse label="Tavero Marketplace" />
           <p className="text-xs text-white/35">
             A connected cafe discovery and ordering experience.
           </p>

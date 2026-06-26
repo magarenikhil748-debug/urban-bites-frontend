@@ -14,10 +14,10 @@ export function TaveroBrand({
       <span
         className={`relative flex shrink-0 items-center justify-center rounded-[1rem] ${
           compact ? 'h-10 w-10' : 'h-11 w-11'
-        } ${inverse ? 'bg-[#f0c57a] text-[#2c190f]' : 'bg-[#321d13] text-[#f0c57a]'}`}
+        } ${inverse ? 'bg-[#F2C572] text-[#2C1810]' : 'bg-[#2C1810] text-[#F2C572]'}`}
       >
         <Coffee size={compact ? 19 : 21} strokeWidth={2.4} />
-        <span className="absolute -bottom-1 -right-1 h-3 w-3 rounded-full border-2 border-current bg-[#75966d]" />
+        <span className="absolute -bottom-1 -right-1 h-3 w-3 rounded-full border-2 border-current bg-[#7B9E6B]" />
       </span>
       <span>
         <span

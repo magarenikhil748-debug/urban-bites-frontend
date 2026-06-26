@@ -54,7 +54,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
                 href={item.href}
                 className={`flex min-h-12 items-center gap-3 rounded-2xl px-4 text-sm font-black transition ${
                   active
-                    ? 'bg-[#e8b968] text-[#17251f]'
+                    ? 'bg-[#F2C572] text-[#254334]'
                     : 'text-white/45 hover:bg-white/[0.05] hover:text-white'
                 }`}
               >
@@ -74,14 +74,14 @@ export function DashboardShell({ children }: { children: ReactNode }) {
                 <Link
                   href={`/cafe/${cafe.slug}`}
                   target="_blank"
-                  className="flex min-h-9 flex-1 items-center justify-center gap-1.5 rounded-xl bg-white/[0.06] text-xs font-bold text-white/60 hover:text-white"
+                  className="flex min-h-9 flex-1 items-center justify-center gap-1.5 rounded-xl bg-white/[0.06] text-xs font-bold text-white/60 transition hover:-translate-y-0.5 hover:bg-white/[0.09] hover:text-white"
                 >
                   Profile <ExternalLink size={12} />
                 </Link>
                 <Link
                   href={`/cafe/${cafe.slug}/menu`}
                   target="_blank"
-                  className="flex min-h-9 flex-1 items-center justify-center gap-1.5 rounded-xl bg-white/[0.06] text-xs font-bold text-white/60 hover:text-white"
+                  className="flex min-h-9 flex-1 items-center justify-center gap-1.5 rounded-xl bg-white/[0.06] text-xs font-bold text-white/60 transition hover:-translate-y-0.5 hover:bg-white/[0.09] hover:text-white"
                 >
                   Menu <ExternalLink size={12} />
                 </Link>
@@ -130,7 +130,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
                 <Link
                   href={`/cafe/${cafe.slug}`}
                   target="_blank"
-                  className="hidden min-h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-xs font-black text-white/60 transition hover:text-white sm:flex"
+                  className="hidden min-h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-xs font-black text-white/60 transition hover:-translate-y-0.5 hover:border-[#F2C572]/25 hover:text-white sm:flex"
                 >
                   View public profile
                   <ExternalLink size={13} />
@@ -158,7 +158,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
                   key={item.href}
                   href={item.href}
                   className={`flex min-h-10 shrink-0 items-center gap-2 rounded-xl px-3 text-xs font-black ${
-                    active ? 'bg-[#e8b968] text-[#17251f]' : 'text-white/40'
+                    active ? 'bg-[#F2C572] text-[#254334]' : 'text-white/40'
                   }`}
                 >
                   <item.icon size={15} />

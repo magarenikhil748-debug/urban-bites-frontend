@@ -138,41 +138,41 @@ const statusConfig: Record<
   PLACED: {
     label: 'New / Pending',
     shortLabel: 'Pending',
-    accent: 'border-amber-400/30',
-    badge: 'bg-amber-400/10 text-amber-300',
-    dot: 'bg-amber-400',
+    accent: 'border-[#F2C572]/30',
+    badge: 'bg-[#C17F3E]/10 text-[#F2C572]',
+    dot: 'bg-[#F2C572]',
     empty: 'No new orders waiting.',
   },
   ACCEPTED: {
     label: 'Accepted',
     shortLabel: 'Accepted',
-    accent: 'border-sky-400/30',
-    badge: 'bg-sky-400/10 text-sky-300',
-    dot: 'bg-sky-400',
+    accent: 'border-[#D4A853]/30',
+    badge: 'bg-[#D4A853]/10 text-[#e6c87a]',
+    dot: 'bg-[#D4A853]',
     empty: 'No accepted orders.',
   },
   PREPARING: {
     label: 'Preparing',
     shortLabel: 'Preparing',
-    accent: 'border-violet-400/30',
-    badge: 'bg-violet-400/10 text-violet-300',
-    dot: 'bg-violet-400',
+    accent: 'border-[#C17F3E]/30',
+    badge: 'bg-[#C17F3E]/10 text-[#e6ad75]',
+    dot: 'bg-[#C17F3E]',
     empty: 'The kitchen queue is clear.',
   },
   READY: {
     label: 'Ready',
     shortLabel: 'Ready',
-    accent: 'border-emerald-400/30',
-    badge: 'bg-emerald-400/10 text-emerald-300',
-    dot: 'bg-emerald-400',
+    accent: 'border-[#7B9E6B]/35',
+    badge: 'bg-[#7B9E6B]/15 text-[#b9d5b2]',
+    dot: 'bg-[#7B9E6B]',
     empty: 'No orders waiting to be served.',
   },
   SERVED: {
     label: 'Served / Completed',
     shortLabel: 'Completed',
     accent: 'border-zinc-400/20',
-    badge: 'bg-zinc-400/10 text-zinc-300',
-    dot: 'bg-zinc-400',
+    badge: 'bg-white/[0.06] text-white/55',
+    dot: 'bg-white/35',
     empty: 'No completed orders yet.',
   },
   CANCELLED: {
@@ -208,8 +208,8 @@ const nextActions: Record<
 }
 
 const actionTone = {
-  primary: 'bg-amber-500 text-black hover:bg-amber-400',
-  success: 'bg-emerald-500 text-emerald-950 hover:bg-emerald-400',
+  primary: 'bg-[#F2C572] text-[#2C1810] hover:bg-[#f6d28a]',
+  success: 'bg-[#7B9E6B] text-[#15231d] hover:bg-[#91b181]',
   danger: 'border border-rose-400/20 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20',
 }
 
@@ -306,45 +306,45 @@ function LoginPanel({ onAuthenticated }: { onAuthenticated: (session: Session) =
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#0a0c0f] px-4 py-10 text-white">
+    <main className="flex min-h-screen items-center justify-center bg-[#160B07] px-4 py-10 text-white">
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-amber-500/10 blur-[130px]" />
-        <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-sky-500/5 blur-[130px]" />
+        <div className="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-[#C17F3E]/10 blur-[130px]" />
+        <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-[#7B9E6B]/10 blur-[130px]" />
       </div>
-      <section className="relative w-full max-w-md rounded-[2rem] border border-white/10 bg-[#12161b]/95 p-6 shadow-2xl sm:p-8">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-500 text-black">
+      <section className="relative w-full max-w-md rounded-[1.8rem] border border-white/10 bg-[#111a16]/95 p-6 shadow-2xl sm:p-8">
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F2C572] text-[#2C1810]">
           <ChefHat size={28} strokeWidth={2.5} />
         </div>
-        <p className="mt-6 text-xs font-black uppercase tracking-[0.25em] text-amber-400">
-          Restaurant operations
+        <p className="mt-6 text-xs font-black uppercase tracking-[0.25em] text-[#F2C572]">
+          Tavero Partner
         </p>
-        <h1 className="mt-2 text-3xl font-black">Live orders dashboard</h1>
-        <p className="mt-2 text-sm leading-6 text-zinc-400">
+        <h1 className="mt-2 font-display text-4xl font-bold">Live orders dashboard</h1>
+        <p className="mt-2 text-sm leading-6 text-white/45">
           Sign in with an owner, manager, kitchen, or staff account to view the live order queue.
         </p>
 
         <form className="mt-7 space-y-4" onSubmit={login}>
           <label className="block">
-            <span className="mb-2 block text-xs font-bold text-zinc-400">Email</span>
+            <span className="mb-2 block text-xs font-bold text-white/45">Email</span>
             <input
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               autoComplete="email"
               required
-              className="min-h-[3.25rem] w-full rounded-2xl border border-white/10 bg-[#090c0f] px-4 text-base outline-none transition focus:border-amber-400/60"
+              className="tavero-input-dark min-h-[3.25rem] text-base"
               placeholder="owner@cafe.com"
             />
           </label>
           <label className="block">
-            <span className="mb-2 block text-xs font-bold text-zinc-400">Password</span>
+            <span className="mb-2 block text-xs font-bold text-white/45">Password</span>
             <input
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               autoComplete="current-password"
               required
-              className="min-h-[3.25rem] w-full rounded-2xl border border-white/10 bg-[#090c0f] px-4 text-base outline-none transition focus:border-amber-400/60"
+              className="tavero-input-dark min-h-[3.25rem] text-base"
               placeholder="Your password"
             />
           </label>
@@ -358,7 +358,7 @@ function LoginPanel({ onAuthenticated }: { onAuthenticated: (session: Session) =
           <button
             type="submit"
             disabled={submitting}
-            className="flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-amber-500 px-5 font-black text-black transition hover:bg-amber-400 disabled:opacity-60"
+            className="tavero-button-primary min-h-14 w-full disabled:opacity-60"
           >
             {submitting ? <Loader2 className="animate-spin" size={20} /> : <Store size={20} />}
             {submitting ? 'Signing in…' : 'Open dashboard'}
@@ -383,11 +383,11 @@ function SummaryCard({
   tone: string
 }) {
   return (
-    <article className="rounded-2xl border border-white/[0.07] bg-[#12161b] p-4 shadow-lg">
+    <article className="tavero-hover-lift rounded-[1.6rem] border border-white/[0.07] bg-[#111a16] p-4 shadow-lg">
       <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${tone}`}>{icon}</div>
       <p className="mt-4 text-2xl font-black text-white">{value}</p>
-      <p className="mt-1 text-sm font-bold text-zinc-300">{label}</p>
-      <p className="mt-1 text-xs text-zinc-600">{detail}</p>
+      <p className="mt-1 text-sm font-bold text-white/75">{label}</p>
+      <p className="mt-1 text-xs text-white/28">{detail}</p>
     </article>
   )
 }
@@ -413,12 +413,12 @@ function OrderCard({
 
   return (
     <article
-      className={`relative overflow-hidden rounded-2xl border bg-[#171b20] p-4 shadow-[0_12px_35px_rgba(0,0,0,0.18)] transition ${config.accent} ${
-        isNew ? 'ring-2 ring-amber-400/70' : ''
+      className={`relative overflow-hidden rounded-[1.6rem] border bg-[#111a16] p-4 shadow-[0_12px_35px_rgba(0,0,0,0.18)] transition ${config.accent} ${
+        isNew ? 'ring-2 ring-[#F2C572]/70' : ''
       }`}
     >
       {isNew && (
-        <div className="absolute right-3 top-3 flex items-center gap-1.5 rounded-full bg-amber-400 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-black">
+        <div className="absolute right-3 top-3 flex items-center gap-1.5 rounded-full bg-[#F2C572] px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-[#2C1810]">
           <BellRing size={11} />
           New
         </div>
@@ -427,9 +427,9 @@ function OrderCard({
       <div className="flex items-start justify-between gap-3 pr-14">
         <div>
           <p className="text-lg font-black text-white">{order.orderNumber}</p>
-          <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-zinc-500">
+          <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-white/35">
             <span className="inline-flex items-center gap-1">
-              <Table2 size={13} className="text-amber-400" />
+              <Table2 size={13} className="text-[#F2C572]" />
               Table {order.tableNumber}
             </span>
             <span className="inline-flex items-center gap-1">
@@ -449,7 +449,7 @@ function OrderCard({
       </div>
 
       {(order.customerName || order.customerPhone) && (
-        <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 rounded-xl bg-black/20 p-3 text-xs text-zinc-400">
+        <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 rounded-xl bg-black/20 p-3 text-xs text-white/45">
           {order.customerName && (
             <span className="inline-flex items-center gap-1.5">
               <UserRound size={13} />
@@ -469,20 +469,20 @@ function OrderCard({
         {order.items.map((item) => (
           <div key={item.id} className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <p className="text-sm font-bold text-zinc-200">
-                <span className="mr-2 text-amber-400">{item.quantity}×</span>
+              <p className="text-sm font-bold text-white/80">
+                <span className="mr-2 text-[#F2C572]">{item.quantity}×</span>
                 {item.name}
               </p>
               {item.addons.length > 0 && (
-                <p className="mt-0.5 text-xs text-zinc-600">
+                <p className="mt-0.5 text-xs text-white/25">
                   {item.addons.map((addon) => addon.name).join(', ')}
                 </p>
               )}
               {item.instructions && (
-                <p className="mt-1 text-xs italic text-zinc-500">{item.instructions}</p>
+                <p className="mt-1 text-xs italic text-white/35">{item.instructions}</p>
               )}
             </div>
-            <p className="shrink-0 text-sm font-bold text-zinc-400">
+            <p className="shrink-0 text-sm font-bold text-white/55">
               {formatPrice(item.totalPriceInPaise, currency)}
             </p>
           </div>
@@ -490,8 +490,8 @@ function OrderCard({
       </div>
 
       {order.specialInstructions && (
-        <div className="mt-4 rounded-xl border border-amber-400/15 bg-amber-400/[0.06] p-3">
-          <p className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-amber-400">
+        <div className="mt-4 rounded-xl border border-[#C17F3E]/20 bg-[#C17F3E]/[0.07] p-3">
+          <p className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#F2C572]">
             <AlertTriangle size={12} />
             Special instruction
           </p>
@@ -501,7 +501,7 @@ function OrderCard({
 
       <div className="mt-4 flex items-end justify-between border-t border-white/[0.07] pt-4">
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-600">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-white/25">
             Order total
           </p>
           <p className="mt-1 text-xl font-black text-white">
@@ -509,13 +509,13 @@ function OrderCard({
           </p>
         </div>
         {actions.length === 0 && isTerminal && (
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-500">
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-white/35">
             {order.status === 'SERVED' ? <CheckCircle2 size={16} /> : <X size={16} />}
             {order.status === 'SERVED' ? 'Completed' : 'Closed'}
           </span>
         )}
         {actions.length === 0 && !isTerminal && !canUpdateStatus && (
-          <span className="text-xs font-bold text-zinc-600">View only</span>
+          <span className="text-xs font-bold text-white/25">View only</span>
         )}
       </div>
 
@@ -571,9 +571,9 @@ function OrderLane({
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className={`h-2.5 w-2.5 rounded-full ${config.dot}`} />
-          <h2 className="text-sm font-black text-zinc-200">{config.label}</h2>
+          <h2 className="text-sm font-black text-white/80">{config.label}</h2>
         </div>
-        <span className="flex h-7 min-w-7 items-center justify-center rounded-full bg-white/[0.06] px-2 text-xs font-black text-zinc-400">
+        <span className="flex h-7 min-w-7 items-center justify-center rounded-full bg-white/[0.06] px-2 text-xs font-black text-white/45">
           {orders.length}
         </span>
       </div>
@@ -581,7 +581,7 @@ function OrderLane({
       <div className="space-y-3">
         {orders.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-white/[0.08] bg-white/[0.02] px-4 py-9 text-center">
-            <p className="text-sm text-zinc-600">{config.empty}</p>
+            <p className="text-sm text-white/25">{config.empty}</p>
           </div>
         ) : (
           orders.map((order) => (
@@ -855,11 +855,11 @@ export default function LiveOrdersDashboardPage() {
   if (restoringSession) {
     return (
       <main
-        className="flex min-h-screen items-center justify-center bg-[#0a0c0f] text-zinc-400"
+        className="flex min-h-screen items-center justify-center bg-[#09100d] text-white/40"
         aria-label="Restoring dashboard session"
         aria-busy="true"
       >
-        <Loader2 size={28} className="animate-spin text-amber-400" />
+        <Loader2 size={28} className="animate-spin text-[#F2C572]" />
       </main>
     )
   }
@@ -873,14 +873,14 @@ export default function LiveOrdersDashboardPage() {
       <header className="hidden">
         <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-black">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#F2C572] text-[#2C1810]">
               <UtensilsCrossed size={22} strokeWidth={2.5} />
             </div>
             <div className="min-w-0">
               <p className="truncate text-base font-black">
                 {selectedMembership?.restaurant.name ?? 'Restaurant dashboard'}
               </p>
-              <p className="text-xs text-zinc-600">Live order operations</p>
+              <p className="text-xs text-white/30">Live order operations</p>
             </div>
           </div>
 
@@ -890,7 +890,7 @@ export default function LiveOrdersDashboardPage() {
                 connectionState === 'live'
                   ? 'bg-emerald-400/10 text-emerald-300'
                   : connectionState === 'connecting'
-                    ? 'bg-amber-400/10 text-amber-300'
+                    ? 'bg-[#C17F3E]/10 text-[#F2C572]'
                     : 'bg-rose-400/10 text-rose-300'
               }`}
             >
@@ -906,7 +906,7 @@ export default function LiveOrdersDashboardPage() {
               onClick={() => void loadOrders(true)}
               disabled={refreshing}
               aria-label="Refresh orders"
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-zinc-400 transition hover:text-white"
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-white/40 transition hover:border-[#F2C572]/25 hover:text-white"
             >
               <RefreshCw size={17} className={refreshing ? 'animate-spin' : ''} />
             </button>
@@ -914,7 +914,7 @@ export default function LiveOrdersDashboardPage() {
               type="button"
               onClick={logout}
               aria-label="Sign out"
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-zinc-400 transition hover:text-rose-300"
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-white/40 transition hover:text-rose-300"
             >
               <LogOut size={17} />
             </button>
@@ -925,11 +925,13 @@ export default function LiveOrdersDashboardPage() {
       <div>
         <section className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.23em] text-amber-400">
+            <p className="text-xs font-black uppercase tracking-[0.23em] text-[#F2C572]">
               Today&apos;s service
             </p>
-            <h1 className="mt-2 text-3xl font-black sm:text-4xl">Order command center</h1>
-            <p className="mt-2 max-w-xl text-sm leading-6 text-zinc-500">
+            <h1 className="mt-2 font-display text-4xl font-bold sm:text-5xl">
+              Order command center
+            </h1>
+            <p className="mt-2 max-w-xl text-sm leading-6 text-white/40">
               Accept new QR orders, move the kitchen queue forward, and get ready plates to the
               right table.
             </p>
@@ -941,7 +943,7 @@ export default function LiveOrdersDashboardPage() {
                 connectionState === 'live'
                   ? 'bg-emerald-400/10 text-emerald-300'
                   : connectionState === 'connecting'
-                    ? 'bg-amber-400/10 text-amber-300'
+                    ? 'bg-[#C17F3E]/10 text-[#F2C572]'
                     : 'bg-rose-400/10 text-rose-300'
               }`}
             >
@@ -957,7 +959,7 @@ export default function LiveOrdersDashboardPage() {
               onClick={() => void loadOrders(true)}
               disabled={refreshing}
               aria-label="Refresh orders"
-              className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-zinc-400 transition hover:text-white"
+              className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-white/40 transition hover:border-[#F2C572]/25 hover:text-white"
             >
               <RefreshCw size={17} className={refreshing ? 'animate-spin' : ''} />
             </button>
@@ -965,11 +967,11 @@ export default function LiveOrdersDashboardPage() {
 
           {session.user.memberships.length > 1 && (
             <label className="hidden min-w-64">
-              <span className="mb-2 block text-xs font-bold text-zinc-500">Restaurant</span>
+              <span className="mb-2 block text-xs font-bold text-white/35">Restaurant</span>
               <select
                 value={selectedRestaurantId}
                 onChange={(event) => setSelectedRestaurantId(event.target.value)}
-                className="min-h-12 w-full rounded-xl border border-white/10 bg-[#12161b] px-4 font-bold text-white"
+                className="min-h-12 w-full rounded-xl border border-white/10 bg-[#111a16] px-4 font-bold text-white"
               >
                 {session.user.memberships.map((membership) => (
                   <option key={membership.id} value={membership.restaurant.id}>
@@ -987,50 +989,50 @@ export default function LiveOrdersDashboardPage() {
             label="Today's orders"
             value={summary.totalOrdersToday}
             detail="All orders placed today"
-            tone="bg-sky-400/10 text-sky-300"
+            tone="bg-white/[0.06] text-white/70"
           />
           <SummaryCard
             icon={<TimerReset size={19} />}
             label="Pending"
             value={pendingCount}
             detail="Waiting for acceptance"
-            tone="bg-amber-400/10 text-amber-300"
+            tone="bg-[#C17F3E]/10 text-[#F2C572]"
           />
           <SummaryCard
             icon={<ChefHat size={19} />}
             label="Preparing"
             value={preparingCount}
             detail="Currently in kitchen"
-            tone="bg-violet-400/10 text-violet-300"
+            tone="bg-[#D4A853]/10 text-[#e6c87a]"
           />
           <SummaryCard
             icon={<CheckCircle2 size={19} />}
             label="Completed"
             value={summary.completedOrdersCount}
             detail="Served today"
-            tone="bg-emerald-400/10 text-emerald-300"
+            tone="bg-[#7B9E6B]/15 text-[#b9d5b2]"
           />
           <SummaryCard
             icon={<IndianRupee size={19} />}
             label="Today's revenue"
             value={formatPrice(summary.revenueTodayInPaise, currency)}
             detail="Excludes cancelled orders"
-            tone="bg-rose-400/10 text-rose-300"
+            tone="bg-[#F2C572]/10 text-[#F2C572]"
           />
         </section>
 
-        <section className="mt-6 rounded-2xl border border-white/[0.07] bg-[#12161b] p-3 sm:p-4">
+        <section className="mt-6 rounded-[1.6rem] border border-white/[0.07] bg-[#111a16] p-3 shadow-xl shadow-black/10 sm:p-4">
           <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
             <div className="relative flex-1 xl:max-w-md">
               <Search
                 size={17}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-600"
+                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-white/25"
               />
               <input
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search order, table, or customer"
-                className="min-h-11 w-full rounded-xl border border-white/[0.07] bg-[#090c0f] pl-10 pr-4 text-sm text-white placeholder:text-zinc-700"
+                className="tavero-input-dark min-h-11 rounded-xl pl-10 pr-4 text-sm"
               />
             </div>
             <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -1043,8 +1045,8 @@ export default function LiveOrdersDashboardPage() {
                     onClick={() => setStatusFilter(status)}
                     className={`min-h-10 shrink-0 rounded-xl px-3.5 text-xs font-black transition ${
                       active
-                        ? 'bg-amber-500 text-black'
-                        : 'border border-white/[0.07] bg-white/[0.03] text-zinc-500 hover:text-white'
+                        ? 'bg-[#F2C572] text-[#2C1810]'
+                        : 'border border-white/[0.07] bg-white/[0.03] text-white/35 hover:border-[#F2C572]/20 hover:text-white'
                     }`}
                   >
                     {status === 'ALL' ? 'All orders' : statusConfig[status].shortLabel}
@@ -1103,10 +1105,12 @@ export default function LiveOrdersDashboardPage() {
               statusFilter === 'CANCELLED') && (
               <section className="mt-8 border-t border-white/[0.07] pt-7">
                 <div className="mb-4">
-                  <p className="text-xs font-black uppercase tracking-[0.22em] text-zinc-600">
+                  <p className="text-xs font-black uppercase tracking-[0.22em] text-white/25">
                     Closed orders
                   </p>
-                  <h2 className="mt-1 text-xl font-black text-zinc-300">Completed and cancelled</h2>
+                  <h2 className="mt-1 text-xl font-black text-white/75">
+                    Completed and cancelled
+                  </h2>
                 </div>
                 <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
                   {(statusFilter === 'ALL'
