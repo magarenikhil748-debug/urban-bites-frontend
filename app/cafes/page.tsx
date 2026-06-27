@@ -192,7 +192,7 @@ export default function CafesMarketplacePage() {
             {
               icon: QrCode,
               title: 'Table ordering',
-              text: 'Select your table and send the order directly to staff.',
+              text: 'Scan the secure QR at your table to send an order directly to staff.',
             },
             {
               icon: LayoutDashboard,
@@ -239,7 +239,7 @@ export default function CafesMarketplacePage() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search cafes, cities, or descriptions"
-                className="tavero-input-light min-h-[3.25rem] pl-11 pr-4 text-sm font-medium"
+              className="tavero-input-light min-h-[3.25rem] pl-11 pr-4 text-sm font-medium"
             />
           </div>
           <div className="flex gap-2">
@@ -325,7 +325,7 @@ export default function CafesMarketplacePage() {
                   'Choose with confidence',
                   'Understand what is available without invented ratings or hype.',
                 ],
-                ['03', 'Scan and order', 'Use the cafe QR flow and select the correct table.'],
+                ['03', 'Scan and order', 'Use the secure QR placed on your physical table.'],
                 [
                   '04',
                   'Staff receives it live',

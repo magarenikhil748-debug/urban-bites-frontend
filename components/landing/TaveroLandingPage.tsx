@@ -49,15 +49,19 @@ const discoveryChips = [
 ]
 
 const liveFeatures = [
-  [Store, 'Cafe discovery profile', 'Present your cafe, menu, location, and ordering link.'],
-  [QrCode, 'QR menu ordering', 'Guests scan or open a link, choose a table, and order.'],
-  [Table2, 'Table-based ordering', 'Every public order is connected to the selected active table.'],
+  [Store, 'Cafe discovery profile', 'Present your cafe, location, and current menu preview.'],
+  [QrCode, 'QR menu ordering', 'Guests scan the secure QR placed on their table and order.'],
+  [Table2, 'Table-based ordering', 'Every order is locked to the table encoded by its QR.'],
   [ReceiptText, 'Live order dashboard', 'Staff receive new orders and move them through service.'],
   [BookOpen, 'Menu management', 'Manage categories, items, prices, images, and availability.'],
   [LayoutDashboard, 'Table management', 'Create, edit, deactivate, and reactivate cafe tables.'],
   [MessageCircle, 'WhatsApp sharing', 'Share cafe profiles and menu links without extra tooling.'],
   [BadgeCheck, 'Admin approval control', 'Approve, suspend, and reactivate marketplace cafes.'],
-  [ShieldCheck, 'Public order protection', 'Public ordering is idempotent and rate-limited.'],
+  [
+    ShieldCheck,
+    'Public order protection',
+    'Orders require a secure table QR and remain rate-limited.',
+  ],
   [
     CheckCircle2,
     'Deployment-ready base',
@@ -222,7 +226,7 @@ function HeroPreview() {
           {[
             [ReceiptText, 'Live orders', 'Receive and update'],
             [QrCode, 'QR menu ready', 'Download and share'],
-            [Table2, 'Table selection', 'Connected to orders'],
+            [Table2, 'Table QR lock', 'Connected to orders'],
             [MessageCircle, 'WhatsApp sharing', 'Profile and menu'],
           ].map(([Icon, title, text]) => {
             const PreviewIcon = Icon as typeof ReceiptText
@@ -354,8 +358,8 @@ export function TaveroLandingPage() {
               <span className="block text-[#f0c57a]">real customers.</span>
             </h1>
             <p className="tavero-hero-enter tavero-hero-enter-delay-2 mt-6 max-w-2xl text-base leading-7 text-white/68 sm:text-lg">
-              Tavero helps people discover cafes by vibe, occasion, and menu — then scan, select a
-              table, and order without downloading an app.
+              Tavero helps people discover cafes by vibe, occasion, and menu — then scan the secure
+              QR on their table and order without downloading an app.
             </p>
             <p className="mt-4 max-w-2xl border-l-2 border-[#75966d] pl-4 text-sm leading-6 text-white/48">
               For cafe owners, Tavero turns discovery into live orders, QR ordering, WhatsApp
@@ -391,24 +395,18 @@ export function TaveroLandingPage() {
       >
         <div className="mx-auto flex max-w-[1500px] gap-2 overflow-x-auto px-4 [scrollbar-width:none] sm:px-6 [&::-webkit-scrollbar]:hidden">
           {discoveryChips.map((chip) => (
-            <span
-              key={chip}
-              className="tavero-chip shrink-0"
-            >
+            <span key={chip} className="tavero-chip shrink-0">
               {chip}
             </span>
           ))}
         </div>
       </section>
 
-      <section
-        className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28"
-        data-tavero-reveal
-      >
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28" data-tavero-reveal>
         <SectionHeading
           eyebrow="The gap cafe owners feel"
           title="Cafes are visible everywhere, but customers still slip away."
-          description="Attention is scattered across platforms. Tavero connects the moment someone discovers your cafe to the moment they view the menu, choose a table, and place an order."
+          description="Attention is scattered across platforms. Tavero connects cafe discovery and menu preview to secure QR ordering once a guest is seated."
         />
         <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {[
@@ -477,8 +475,8 @@ export function TaveroLandingPage() {
                   'Discover a cafe',
                   'Open the cafe profile',
                   'View the current menu',
-                  'Scan QR or open the menu link',
-                  'Select the correct table',
+                  'Preview the menu before visiting',
+                  'Scan the QR on the table',
                   'Place the order',
                 ],
               },
@@ -488,7 +486,7 @@ export function TaveroLandingPage() {
                 steps: [
                   'Manage the cafe profile',
                   'Manage menu and tables',
-                  'Generate the cafe QR',
+                  'Generate secure table QR codes',
                   'Share profile or menu on WhatsApp',
                   'Receive orders live',
                   'Update order status',
@@ -524,20 +522,14 @@ export function TaveroLandingPage() {
         </div>
       </section>
 
-      <section
-        className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28"
-        data-tavero-reveal
-      >
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28" data-tavero-reveal>
         <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
           <SectionHeading
             eyebrow="Marketplace personality"
             title="A marketplace built around why people visit cafes."
             description="These are collection directions for the Tavero marketplace—not claims that every collection is fully indexed today."
           />
-          <Link
-            href="/cafes"
-            className="tavero-button-dark tavero-cta-shine w-fit text-sm"
-          >
+          <Link href="/cafes" className="tavero-button-dark tavero-cta-shine w-fit text-sm">
             Explore Tavero Marketplace <ArrowRight size={16} />
           </Link>
         </div>
@@ -634,10 +626,7 @@ export function TaveroLandingPage() {
         </div>
       </section>
 
-      <section
-        className="bg-[#EFE7DA] px-4 py-20 sm:px-6 lg:py-28"
-        data-tavero-reveal
-      >
+      <section className="bg-[#EFE7DA] px-4 py-20 sm:px-6 lg:py-28" data-tavero-reveal>
         <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[0.8fr_1.2fr]">
           <SectionHeading
             eyebrow="Tavero Partner"
@@ -718,10 +707,7 @@ export function TaveroLandingPage() {
         </div>
       </section>
 
-      <section
-        className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28"
-        data-tavero-reveal
-      >
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28" data-tavero-reveal>
         <SectionHeading
           eyebrow="A different role in the cafe stack"
           title="Tavero is not another food app. It is the discovery-to-order layer for cafes."
@@ -888,10 +874,7 @@ export function TaveroLandingPage() {
         </div>
       </section>
 
-      <section
-        className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28"
-        data-tavero-reveal
-      >
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28" data-tavero-reveal>
         <SectionHeading
           eyebrow="Honest launch proof"
           title="Built for independent cafe pilots, not inflated launch numbers."
@@ -902,7 +885,7 @@ export function TaveroLandingPage() {
             [
               QrCode,
               'Real ordering flow',
-              'Scan, select a table, order, and see it on the dashboard.',
+              'Scan the table QR, order, and see it on the dashboard.',
             ],
             [
               BadgeCheck,

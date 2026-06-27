@@ -12,7 +12,9 @@ import {
   Minus,
   Phone,
   Plus,
+  QrCode,
   RefreshCw,
+  ShieldAlert,
   ShoppingBag,
   Sparkles,
   Store,
@@ -56,13 +58,20 @@ type MenuCategory = {
   items: MenuItem[]
 }
 
-type CafeTable = {
-  id: string
-  tableNumber: string
-  tableLabel: string | null
+type QrContext = {
+  restaurant: {
+    id: string
+    name: string
+    slug: string
+  }
   branch: {
     id: string
     name: string
+  }
+  table: {
+    id: string
+    tableNumber: string
+    tableLabel: string | null
   }
 }
 
@@ -70,6 +79,7 @@ type ApiEnvelope<T> = {
   success: boolean
   message: string
   data: T
+  code?: string
 }
 
 type OrderConfirmation = {
@@ -148,11 +158,7 @@ function PageError({ message, onRetry }: { message: string; onRetry: () => void 
         </div>
         <h1 className="mt-5 text-2xl font-black">Couldn&apos;t load this cafe</h1>
         <p className="mt-2 text-sm leading-6 text-zinc-400">{message}</p>
-        <button
-          type="button"
-          onClick={onRetry}
-          className="tavero-button-primary mt-6 w-full"
-        >
+        <button type="button" onClick={onRetry} className="tavero-button-primary mt-6 w-full">
           <RefreshCw size={18} />
           Try again
         </button>
@@ -209,11 +215,21 @@ function QuantityControl({
   )
 }
 
-export default function CafeMenuPage({ params }: { params: { slug: string } }) {
+export default function CafeMenuPage({
+  params,
+  searchParams,
+}: {
+  params: { slug: string }
+  searchParams?: { t?: string | string[] }
+}) {
+  const tokenParam = searchParams?.t
+  const qrToken = (Array.isArray(tokenParam) ? tokenParam[0] : tokenParam)?.trim() ?? ''
   const [cafe, setCafe] = useState<Cafe | null>(null)
   const [categories, setCategories] = useState<MenuCategory[]>([])
-  const [tables, setTables] = useState<CafeTable[]>([])
-  const [selectedTableId, setSelectedTableId] = useState('')
+  const [qrContext, setQrContext] = useState<QrContext | null>(null)
+  const [qrStatus, setQrStatus] = useState<'preview' | 'validating' | 'valid' | 'invalid'>(
+    qrToken ? 'validating' : 'preview',
+  )
   const [quantities, setQuantities] = useState<Record<string, number>>({})
   const [customerName, setCustomerName] = useState('')
   const [customerPhone, setCustomerPhone] = useState('')
@@ -236,38 +252,42 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
       try {
         setLoading(true)
         setLoadError('')
-        const [menuResponse, tablesResponse] = await Promise.all([
+        setQrStatus(qrToken ? 'validating' : 'preview')
+        setQrContext(null)
+        const [menuResponse, qrResponse] = await Promise.all([
           fetch(`${apiBaseUrl}/api/v1/public/cafes/${encodeURIComponent(params.slug)}/menu`, {
             signal: controller.signal,
           }),
-          fetch(`${apiBaseUrl}/api/v1/public/cafes/${encodeURIComponent(params.slug)}/tables`, {
-            signal: controller.signal,
-          }),
+          qrToken
+            ? fetch(`${apiBaseUrl}/api/v1/public/qr/${encodeURIComponent(qrToken)}`, {
+                signal: controller.signal,
+              })
+            : Promise.resolve(null),
         ])
 
         const menuBody = (await menuResponse.json()) as ApiEnvelope<{
           cafe: Cafe
           categories: MenuCategory[]
         }>
-        const tablesBody = (await tablesResponse.json()) as ApiEnvelope<{
-          tables: CafeTable[]
-        }>
-
-        if (!menuResponse.ok || !tablesResponse.ok) {
-          throw new Error(
-            menuBody.message || tablesBody.message || 'This cafe is unavailable right now.',
-          )
+        if (!menuResponse.ok) {
+          throw new Error(menuBody.message || 'This cafe is unavailable right now.')
         }
 
         setCafe(menuBody.data.cafe)
         setCategories(menuBody.data.categories)
-        setTables(tablesBody.data.tables)
-        captureProductEvent('qr_menu_viewed', { cafe_id: menuBody.data.cafe.id })
-        setSelectedTableId((current) =>
-          tablesBody.data.tables.some((table) => table.id === current)
-            ? current
-            : (tablesBody.data.tables[0]?.id ?? ''),
-        )
+        if (qrResponse) {
+          const qrBody = (await qrResponse.json()) as ApiEnvelope<QrContext>
+          if (qrResponse.ok && qrBody.data.restaurant.slug === params.slug) {
+            setQrContext(qrBody.data)
+            setQrStatus('valid')
+            captureProductEvent('qr_menu_viewed', { cafe_id: menuBody.data.cafe.id })
+          } else {
+            setQrStatus('invalid')
+          }
+        } else {
+          setQrStatus('preview')
+          captureProductEvent('menu_preview_viewed', { cafe_id: menuBody.data.cafe.id })
+        }
       } catch (error) {
         if (error instanceof DOMException && error.name === 'AbortError') {
           return
@@ -282,7 +302,7 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
 
     void loadCafe()
     return () => controller.abort()
-  }, [params.slug, reloadKey])
+  }, [params.slug, qrToken, reloadKey])
 
   useEffect(() => {
     if (!orderConfirmation) {
@@ -295,9 +315,10 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
     })
   }, [orderConfirmation])
 
-  const selectedTable = tables.find((table) => table.id === selectedTableId)
+  const selectedTable = qrContext?.table ?? null
+  const orderingEnabled = qrStatus === 'valid' && Boolean(qrContext)
   const visibleCategories = useMemo(() => {
-    if (!selectedTable) {
+    if (!qrContext) {
       return categories
     }
 
@@ -305,11 +326,11 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
       .map((category) => ({
         ...category,
         items: category.items.filter(
-          (item) => item.branchId === null || item.branchId === selectedTable.branch.id,
+          (item) => item.branchId === null || item.branchId === qrContext.branch.id,
         ),
       }))
       .filter((category) => category.items.length > 0)
-  }, [categories, selectedTable])
+  }, [categories, qrContext])
 
   const visibleItems = useMemo(
     () => visibleCategories.flatMap((category) => category.items),
@@ -335,19 +356,12 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
     }))
   }
 
-  const selectTable = (tableId: string) => {
-    setSelectedTableId(tableId)
-    setOrderConfirmation(null)
-    setOrderError('')
-  }
-
   const placeOrder = async () => {
     if (submitting) {
       return
     }
-    if (!selectedTable) {
-      setOrderError('Select an available table before placing your order.')
-      checkoutRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    if (!orderingEnabled || !selectedTable || !qrToken) {
+      setOrderError('Please scan the QR code on your table to place an order.')
       return
     }
     if (selectedItems.length === 0) {
@@ -368,7 +382,7 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
             'Idempotency-Key': idempotencyKeyRef.current,
           },
           body: JSON.stringify({
-            tableNumber: selectedTable.tableNumber,
+            qrToken,
             customerName: customerName.trim() || undefined,
             customerPhone: customerPhone.trim() || undefined,
             specialInstruction: specialInstruction.trim() || undefined,
@@ -384,6 +398,11 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
       }>
 
       if (!response.ok) {
+        if (body.code === 'INVALID_TABLE_QR' || body.code === 'QR_REQUIRED') {
+          setQrContext(null)
+          setQrStatus('invalid')
+          setQuantities({})
+        }
         throw new Error(body.message || 'Unable to place the order.')
       }
 
@@ -428,7 +447,11 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
     : undefined
 
   return (
-    <main className="min-h-screen bg-[#160B07] pb-36 text-[#FAF7F2] selection:bg-[#C17F3E]/30 sm:pb-16">
+    <main
+      className={`min-h-screen bg-[#160B07] text-[#FAF7F2] selection:bg-[#C17F3E]/30 ${
+        orderingEnabled ? 'pb-36 sm:pb-16' : 'pb-16'
+      }`}
+    >
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute -left-32 top-48 h-80 w-80 rounded-full bg-[#C17F3E]/10 blur-[100px]" />
         <div className="absolute -right-40 top-[42rem] h-96 w-96 rounded-full bg-[#7B9E6B]/10 blur-[120px]" />
@@ -467,11 +490,13 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
               </div>
               <div className="rounded-full border border-emerald-300/20 bg-emerald-500/10 px-3 py-1.5 text-xs font-bold text-emerald-300 backdrop-blur-xl">
                 <span className="mr-2 inline-block h-2 w-2 rounded-full bg-emerald-400" />
-                Open for table orders
+                {orderingEnabled ? 'Secure table order' : 'Menu preview'}
               </div>
             </div>
             <p className="mb-2 text-xs font-black uppercase tracking-[0.28em] text-[#F2C572]">
-              Scan · Pick a table · Order
+              {orderingEnabled
+                ? 'Scanned · Table locked · Ready to order'
+                : 'Browse · Plan · Visit'}
             </p>
             <h1 className="font-display text-4xl font-black leading-none sm:text-6xl">
               {cafe.name}
@@ -527,45 +552,39 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
           <section className="relative -mt-4 rounded-[1.75rem] border border-white/10 bg-[#211510]/95 p-4 shadow-2xl backdrop-blur-xl sm:mx-4 sm:p-5">
             <div className="flex items-start gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#C17F3E]/10 text-[#F2C572]">
-                <UtensilsCrossed size={21} />
+                {orderingEnabled ? <QrCode size={21} /> : <ShieldAlert size={21} />}
               </div>
               <div className="min-w-0 flex-1">
-                <label className="block text-base font-black" htmlFor="table">
-                  Where are you seated?
-                </label>
-                <p className="mt-0.5 text-xs leading-5 text-zinc-500">
-                  Choose carefully so the team brings your order to the right table.
-                </p>
+                {orderingEnabled && selectedTable ? (
+                  <>
+                    <p className="text-base font-black">
+                      You’re ordering for{' '}
+                      {selectedTable.tableLabel ?? `Table ${selectedTable.tableNumber}`}.
+                    </p>
+                    <p className="mt-0.5 text-xs leading-5 text-zinc-500">
+                      Staff will bring your order to this table. The table cannot be changed from
+                      this secure link.
+                    </p>
+                  </>
+                ) : qrStatus === 'invalid' ? (
+                  <>
+                    <p className="text-base font-black text-rose-200">Invalid table QR</p>
+                    <p className="mt-0.5 text-xs leading-5 text-rose-200/65">
+                      This ordering link is invalid or expired. Please scan the QR code on your
+                      table again.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-base font-black">Menu preview</p>
+                    <p className="mt-0.5 text-xs leading-5 text-zinc-500">
+                      Ordering is available only after scanning the QR code placed on your table.
+                      Ask staff for your table QR.
+                    </p>
+                  </>
+                )}
               </div>
             </div>
-
-            {tables.length > 0 ? (
-              <div className="relative mt-4">
-                <select
-                  id="table"
-                  value={selectedTableId}
-                  onChange={(event) => selectTable(event.target.value)}
-                  className="tavero-input-dark min-h-14 appearance-none pr-12 text-base font-bold shadow-inner"
-                >
-                  {tables.map((table) => (
-                    <option key={table.id} value={table.id}>
-                      {table.tableLabel ?? `Table ${table.tableNumber}`} · {table.branch.name}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown
-                  size={20}
-                  className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#F2C572]"
-                />
-              </div>
-            ) : (
-              <div className="mt-4 rounded-2xl border border-rose-400/15 bg-rose-500/5 p-4">
-                <p className="font-bold text-rose-200">No tables available</p>
-                <p className="mt-1 text-sm leading-6 text-rose-200/60">
-                  Please ask a staff member before placing an order.
-                </p>
-              </div>
-            )}
           </section>
 
           {visibleCategories.length > 0 && (
@@ -595,8 +614,7 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
                 </div>
                 <h2 className="mt-5 text-xl font-black">The menu is taking a breather</h2>
                 <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-zinc-500">
-                  There are no available items for this table right now. Please check with the cafe
-                  team.
+                  There are no available items right now. Please check with the cafe team.
                 </p>
               </section>
             ) : (
@@ -671,11 +689,13 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
                               <p className="text-lg font-black text-[#F2C572]">
                                 {formatPrice(item.priceInPaise, cafe.currency)}
                               </p>
-                              <QuantityControl
-                                quantity={quantity}
-                                onDecrease={() => changeQuantity(item.id, -1)}
-                                onIncrease={() => changeQuantity(item.id, 1)}
-                              />
+                              {orderingEnabled && (
+                                <QuantityControl
+                                  quantity={quantity}
+                                  onDecrease={() => changeQuantity(item.id, -1)}
+                                  onIncrease={() => changeQuantity(item.id, 1)}
+                                />
+                              )}
                             </div>
                           </div>
                         </article>
@@ -687,152 +707,154 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
             )}
           </div>
 
-          <section
-            ref={checkoutRef}
-            className="mt-12 overflow-hidden rounded-[1.8rem] border border-white/[0.08] bg-[#211510]"
-          >
-            <div className="border-b border-white/[0.07] p-5 sm:p-6">
-              <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#C17F3E]/10 text-[#F2C572]">
-                  <Leaf size={21} />
-                </div>
-                <div>
-                  <h2 className="text-xl font-black">A few final details</h2>
-                  <p className="mt-0.5 text-xs text-zinc-500">
-                    Optional, but helpful for the cafe team.
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                <label className="block">
-                  <span className="mb-2 block text-xs font-bold text-zinc-400">Your name</span>
-                  <input
-                    value={customerName}
-                    onChange={(event) => setCustomerName(event.target.value)}
-                    placeholder="Optional"
-                    autoComplete="name"
-                    maxLength={120}
-                    className="min-h-[3.25rem] w-full rounded-2xl border border-white/[0.08] bg-[#0e0b0a] px-4 py-3.5 text-base text-white placeholder:text-zinc-700"
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-2 block text-xs font-bold text-zinc-400">Phone number</span>
-                  <input
-                    type="tel"
-                    value={customerPhone}
-                    onChange={(event) => setCustomerPhone(event.target.value)}
-                    placeholder="Optional"
-                    autoComplete="tel"
-                    inputMode="tel"
-                    maxLength={30}
-                    className="min-h-[3.25rem] w-full rounded-2xl border border-white/[0.08] bg-[#0e0b0a] px-4 py-3.5 text-base text-white placeholder:text-zinc-700"
-                  />
-                </label>
-              </div>
-
-              <label className="mt-3 block">
-                <span className="mb-2 block text-xs font-bold text-zinc-400">
-                  Special instruction
-                </span>
-                <textarea
-                  value={specialInstruction}
-                  onChange={(event) => setSpecialInstruction(event.target.value)}
-                  placeholder="Allergies, spice preference, or serving notes…"
-                  className="w-full resize-none rounded-2xl border border-white/[0.08] bg-[#0e0b0a] px-4 py-3.5 text-base text-white placeholder:text-zinc-700"
-                  rows={3}
-                  maxLength={1000}
-                />
-              </label>
-            </div>
-
-            <div className="p-5 sm:p-6">
-              {selectedItems.length > 0 && (
-                <div className="mb-5 rounded-2xl border border-white/[0.07] bg-[#0e0b0a] p-4">
-                  <div className="mb-3 flex items-center justify-between">
-                    <h3 className="text-sm font-black text-zinc-200">Your order</h3>
-                    <span className="text-xs font-semibold text-zinc-600">
-                      {itemCount} item{itemCount === 1 ? '' : 's'}
-                    </span>
+          {orderingEnabled && (
+            <section
+              ref={checkoutRef}
+              className="mt-12 overflow-hidden rounded-[1.8rem] border border-white/[0.08] bg-[#211510]"
+            >
+              <div className="border-b border-white/[0.07] p-5 sm:p-6">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#C17F3E]/10 text-[#F2C572]">
+                    <Leaf size={21} />
                   </div>
-                  <div className="space-y-3">
-                    {selectedItems.map((item) => {
-                      const quantity = quantities[item.id] ?? 0
+                  <div>
+                    <h2 className="text-xl font-black">A few final details</h2>
+                    <p className="mt-0.5 text-xs text-zinc-500">
+                      Optional, but helpful for the cafe team.
+                    </p>
+                  </div>
+                </div>
 
-                      return (
-                        <div key={item.id} className="flex items-center justify-between gap-4">
-                          <div className="min-w-0">
-                            <p className="truncate text-sm font-bold text-zinc-300">
-                              {quantity} × {item.name}
-                            </p>
-                            <p className="mt-0.5 text-xs text-zinc-600">
-                              {formatPrice(item.priceInPaise, cafe.currency)} each
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="mb-2 block text-xs font-bold text-zinc-400">Your name</span>
+                    <input
+                      value={customerName}
+                      onChange={(event) => setCustomerName(event.target.value)}
+                      placeholder="Optional"
+                      autoComplete="name"
+                      maxLength={120}
+                      className="min-h-[3.25rem] w-full rounded-2xl border border-white/[0.08] bg-[#0e0b0a] px-4 py-3.5 text-base text-white placeholder:text-zinc-700"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="mb-2 block text-xs font-bold text-zinc-400">Phone number</span>
+                    <input
+                      type="tel"
+                      value={customerPhone}
+                      onChange={(event) => setCustomerPhone(event.target.value)}
+                      placeholder="Optional"
+                      autoComplete="tel"
+                      inputMode="tel"
+                      maxLength={30}
+                      className="min-h-[3.25rem] w-full rounded-2xl border border-white/[0.08] bg-[#0e0b0a] px-4 py-3.5 text-base text-white placeholder:text-zinc-700"
+                    />
+                  </label>
+                </div>
+
+                <label className="mt-3 block">
+                  <span className="mb-2 block text-xs font-bold text-zinc-400">
+                    Special instruction
+                  </span>
+                  <textarea
+                    value={specialInstruction}
+                    onChange={(event) => setSpecialInstruction(event.target.value)}
+                    placeholder="Allergies, spice preference, or serving notes…"
+                    className="w-full resize-none rounded-2xl border border-white/[0.08] bg-[#0e0b0a] px-4 py-3.5 text-base text-white placeholder:text-zinc-700"
+                    rows={3}
+                    maxLength={1000}
+                  />
+                </label>
+              </div>
+
+              <div className="p-5 sm:p-6">
+                {selectedItems.length > 0 && (
+                  <div className="mb-5 rounded-2xl border border-white/[0.07] bg-[#0e0b0a] p-4">
+                    <div className="mb-3 flex items-center justify-between">
+                      <h3 className="text-sm font-black text-zinc-200">Your order</h3>
+                      <span className="text-xs font-semibold text-zinc-600">
+                        {itemCount} item{itemCount === 1 ? '' : 's'}
+                      </span>
+                    </div>
+                    <div className="space-y-3">
+                      {selectedItems.map((item) => {
+                        const quantity = quantities[item.id] ?? 0
+
+                        return (
+                          <div key={item.id} className="flex items-center justify-between gap-4">
+                            <div className="min-w-0">
+                              <p className="truncate text-sm font-bold text-zinc-300">
+                                {quantity} × {item.name}
+                              </p>
+                              <p className="mt-0.5 text-xs text-zinc-600">
+                                {formatPrice(item.priceInPaise, cafe.currency)} each
+                              </p>
+                            </div>
+                            <p className="shrink-0 text-sm font-black text-zinc-200">
+                              {formatPrice(item.priceInPaise * quantity, cafe.currency)}
                             </p>
                           </div>
-                          <p className="shrink-0 text-sm font-black text-zinc-200">
-                            {formatPrice(item.priceInPaise * quantity, cafe.currency)}
-                          </p>
-                        </div>
-                      )
-                    })}
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+                      Estimated subtotal
+                    </p>
+                    <p className="mt-1 text-2xl font-black text-white">
+                      {formatPrice(subtotalInPaise, cafe.currency)}
+                    </p>
+                  </div>
+                  <div className="text-right text-xs leading-5 text-zinc-500">
+                    <p>
+                      {itemCount} item{itemCount === 1 ? '' : 's'}
+                    </p>
+                    <p>Final tax calculated by cafe</p>
                   </div>
                 </div>
-              )}
 
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-                    Estimated subtotal
-                  </p>
-                  <p className="mt-1 text-2xl font-black text-white">
-                    {formatPrice(subtotalInPaise, cafe.currency)}
-                  </p>
-                </div>
-                <div className="text-right text-xs leading-5 text-zinc-500">
-                  <p>
-                    {itemCount} item{itemCount === 1 ? '' : 's'}
-                  </p>
-                  <p>Final tax calculated by cafe</p>
-                </div>
-              </div>
-
-              {orderError && (
-                <div
-                  className="mt-4 rounded-2xl border border-rose-400/15 bg-rose-500/5 p-4 text-sm leading-6 text-rose-200"
-                  role="alert"
-                >
-                  {orderError}
-                </div>
-              )}
-
-              <button
-                type="button"
-                disabled={submitting || !selectedTable || selectedItems.length === 0}
-                onClick={() => void placeOrder()}
-                aria-busy={submitting}
-                className="btn-glow mt-5 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-amber-500 px-5 text-base font-black text-black transition active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400 disabled:shadow-none"
-              >
-                {submitting ? (
-                  <>
-                    <Loader2 size={20} className="animate-spin" />
-                    Sending order…
-                  </>
-                ) : (
-                  <>
-                    <CheckCircle2 size={20} />
-                    Place order
-                  </>
+                {orderError && (
+                  <div
+                    className="mt-4 rounded-2xl border border-rose-400/15 bg-rose-500/5 p-4 text-sm leading-6 text-rose-200"
+                    role="alert"
+                  >
+                    {orderError}
+                  </div>
                 )}
-              </button>
-              <p className="mt-3 text-center text-[11px] leading-5 text-zinc-600">
-                Prices and final total are securely verified by the cafe.
-              </p>
-            </div>
-          </section>
+
+                <button
+                  type="button"
+                  disabled={submitting || !selectedTable || selectedItems.length === 0}
+                  onClick={() => void placeOrder()}
+                  aria-busy={submitting}
+                  className="btn-glow mt-5 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-amber-500 px-5 text-base font-black text-black transition active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400 disabled:shadow-none"
+                >
+                  {submitting ? (
+                    <>
+                      <Loader2 size={20} className="animate-spin" />
+                      Sending order…
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 size={20} />
+                      Place order
+                    </>
+                  )}
+                </button>
+                <p className="mt-3 text-center text-[11px] leading-5 text-zinc-600">
+                  Prices and final total are securely verified by the cafe.
+                </p>
+              </div>
+            </section>
+          )}
         </div>
       </div>
 
-      {itemCount > 0 && (
+      {orderingEnabled && itemCount > 0 && (
         <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[#0b0908]/95 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-16px_50px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:hidden">
           <div className="mx-auto flex max-w-lg items-center gap-3">
             <button
@@ -856,7 +878,7 @@ export default function CafeMenuPage({ params }: { params: { slug: string } }) {
                 <span className="block text-xs font-bold text-zinc-500">
                   {selectedTable
                     ? (selectedTable.tableLabel ?? `Table ${selectedTable.tableNumber}`)
-                    : 'Select a table'}
+                    : 'Table QR required'}
                 </span>
                 <span className="block truncate text-base font-black text-white">
                   {formatPrice(subtotalInPaise, cafe.currency)}

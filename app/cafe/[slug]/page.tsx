@@ -27,7 +27,6 @@ import {
   publicApiRequest,
   type PublicCafe,
   type PublicMenuCategory,
-  type PublicTable,
 } from '@/lib/public-marketplace'
 import { captureProductEvent } from '@/lib/product-analytics'
 import { getCafeProfileUrl, getWhatsAppShareUrl } from '@/lib/share-links'
@@ -51,7 +50,6 @@ function ProfileLoading() {
 export default function CafeProfilePage({ params }: { params: { slug: string } }) {
   const [cafe, setCafe] = useState<PublicCafe | null>(null)
   const [categories, setCategories] = useState<PublicMenuCategory[]>([])
-  const [tables, setTables] = useState<PublicTable[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [reloadKey, setReloadKey] = useState(0)
@@ -64,7 +62,7 @@ export default function CafeProfilePage({ params }: { params: { slug: string } }
       try {
         setLoading(true)
         setError('')
-        const [detail, menu, tableData] = await Promise.all([
+        const [detail, menu] = await Promise.all([
           publicApiRequest<{ cafe: PublicCafe }>(
             `/api/v1/public/cafes/${encodeURIComponent(params.slug)}`,
             controller.signal,
@@ -73,14 +71,9 @@ export default function CafeProfilePage({ params }: { params: { slug: string } }
             `/api/v1/public/cafes/${encodeURIComponent(params.slug)}/menu`,
             controller.signal,
           ),
-          publicApiRequest<{ tables: PublicTable[] }>(
-            `/api/v1/public/cafes/${encodeURIComponent(params.slug)}/tables`,
-            controller.signal,
-          ).catch(() => ({ tables: [] })),
         ])
         setCafe(detail.cafe)
         setCategories(menu.categories)
-        setTables(tableData.tables)
         captureProductEvent('cafe_profile_viewed', { cafe_id: detail.cafe.id })
       } catch (loadError) {
         if (loadError instanceof DOMException && loadError.name === 'AbortError') {
@@ -211,7 +204,7 @@ export default function CafeProfilePage({ params }: { params: { slug: string } }
                 className="flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#e7bb70] px-6 font-black text-[#17251f] transition hover:bg-[#efca8b]"
               >
                 <UtensilsCrossed size={18} />
-                Open menu / Order now
+                Preview menu
               </Link>
               <Link
                 href="/cafes"
@@ -270,9 +263,7 @@ export default function CafeProfilePage({ params }: { params: { slug: string } }
             <QrCode size={20} className="text-[#b87924]" />
             <p className="mt-4 text-sm font-black">QR table ordering</p>
             <p className="mt-1 text-sm leading-6 text-stone-500">
-              {tables.length > 0
-                ? `Available for ${tables.length} active table${tables.length === 1 ? '' : 's'}.`
-                : 'Ask the cafe team about table ordering availability.'}
+              Scan the secure QR placed on your table when you arrive to begin an order.
             </p>
           </article>
         </div>
@@ -297,9 +288,7 @@ export default function CafeProfilePage({ params }: { params: { slug: string } }
                   ? 'Cafe identity and experience described by the venue'
                   : 'Cafe profile available',
                 totalItems > 0 ? 'Current digital menu ready to browse' : 'Menu updates pending',
-                tables.length > 0
-                  ? 'Table selection and QR ordering supported'
-                  : 'Ordering availability shown honestly',
+                'Table ordering begins only from the QR placed at the cafe',
               ].map((item) => (
                 <p key={item} className="flex items-start gap-2.5 text-sm font-bold text-stone-600">
                   <CheckCircle2 size={17} className="mt-0.5 shrink-0 text-emerald-600" />
@@ -322,7 +311,7 @@ export default function CafeProfilePage({ params }: { params: { slug: string } }
                   href={`/cafe/${cafe.slug}/menu`}
                   className="hidden min-h-11 items-center gap-2 rounded-xl bg-[#1b2b25] px-4 text-sm font-black text-white sm:flex"
                 >
-                  Full menu
+                  Preview menu
                   <ArrowRight size={15} />
                 </Link>
               )}
@@ -405,7 +394,7 @@ export default function CafeProfilePage({ params }: { params: { slug: string } }
                 href={`/cafe/${cafe.slug}/menu`}
                 className="mt-7 flex min-h-[3.25rem] w-full items-center justify-center gap-2 rounded-2xl bg-[#1b2b25] px-5 text-sm font-black text-white sm:hidden"
               >
-                Open full menu / Order now
+                Preview full menu
                 <ArrowRight size={16} />
               </Link>
             )}
@@ -431,7 +420,7 @@ export default function CafeProfilePage({ params }: { params: { slug: string } }
             {[
               [MapPin, 'Visit the cafe', 'Use the listed location to find the venue.'],
               [QrCode, 'Scan the QR', 'Open the cafe menu on your phone.'],
-              [Table2, 'Select your table', 'Make sure staff knows exactly where to serve.'],
+              [Table2, 'Table is locked', 'The table QR securely sets where staff should serve.'],
               [
                 ChefHat,
                 'Staff receives it live',
@@ -459,7 +448,7 @@ export default function CafeProfilePage({ params }: { params: { slug: string } }
             className="mt-10 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[#e7bb70] px-6 font-black text-[#17251f] sm:w-fit"
           >
             <UtensilsCrossed size={18} />
-            Browse menu and order
+            Preview menu
           </Link>
         </div>
       </section>

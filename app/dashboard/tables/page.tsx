@@ -125,7 +125,7 @@ export default function TablesManagementPage() {
           token: session.accessToken,
           body: JSON.stringify(payload),
         })
-        setSuccess('Table created with its own backward-compatible QR token.')
+        setSuccess('Table created with its own secure QR token.')
       }
       setForm(null)
       await load()
@@ -168,7 +168,7 @@ export default function TablesManagementPage() {
       <DashboardPageHeader
         eyebrow="Dining floor control"
         title="Tables"
-        description="Keep table selection accurate for customer orders. Active tables appear in the single-cafe QR flow; legacy per-table QR tokens remain intact."
+        description="Keep secure table QR ordering accurate. Every active table has its own non-guessable order token and locked service context."
         actions={
           canManage ? (
             <button
@@ -218,7 +218,7 @@ export default function TablesManagementPage() {
           icon={EyeOff}
           label="Inactive"
           value={inactiveCount}
-          detail="Hidden from table selection"
+          detail="Table QR ordering blocked"
           tone="rose"
         />
         <DashboardStatCard
@@ -331,13 +331,13 @@ export default function TablesManagementPage() {
                   <span className="font-black text-white/65">{table.branch.name}</span>
                 </p>
                 <p className="flex items-center justify-between gap-3 text-xs">
-                  <span className="text-white/28">Customer selection</span>
+                  <span className="text-white/28">Secure ordering</span>
                   <span className="font-black text-white/65">
-                    {table.isActive ? 'Shown' : 'Hidden'}
+                    {table.isActive ? 'QR active' : 'QR blocked'}
                   </span>
                 </p>
                 <p className="flex items-center justify-between gap-3 text-xs">
-                  <span className="text-white/28">Legacy table QR</span>
+                  <span className="text-white/28">Table QR</span>
                   <span className="inline-flex items-center gap-1 font-black text-white/65">
                     <QrCode size={12} /> Configured
                   </span>
@@ -388,7 +388,7 @@ export default function TablesManagementPage() {
 
       <DashboardNotice
         title="How table ordering connects"
-        message="The single cafe QR opens the public menu, where customers choose an active table before ordering. Existing per-table QR records remain available through the backend and are not altered by this dashboard."
+        message="Each active table has a dedicated secure QR. Guests scan at the table, and Tavero locks the order to that table without exposing a manual selector."
       />
 
       {form && (
