@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckCircle2, Send } from 'lucide-react'
+import { CheckCircle2, Loader2, Send } from 'lucide-react'
 import { FormEvent, useState } from 'react'
 
 type EarlyAccessFields = {
@@ -22,22 +22,52 @@ const initialFields: EarlyAccessFields = {
 export function EarlyAccessForm() {
   const [fields, setFields] = useState(initialFields)
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
 
   const updateField = (field: keyof EarlyAccessFields, value: string) => {
     setFields((current) => ({ ...current, [field]: value }))
     setSubmitted(false)
+    setError('')
   }
 
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setSubmitted(true)
+    if (submitting) return
+
+    try {
+      setSubmitting(true)
+      setSubmitted(false)
+      setError('')
+      const apiBaseUrl = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000').replace(
+        /\/$/,
+        '',
+      )
+      const response = await fetch(`${apiBaseUrl}/api/v1/public/early-access`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...fields, note: fields.note.trim() || undefined }),
+      })
+      const body = (await response.json()) as { message?: string }
+      if (!response.ok) {
+        throw new Error(body.message || 'Unable to send your request right now.')
+      }
+
+      setSubmitted(true)
+      setFields(initialFields)
+    } catch (submitError) {
+      setError(
+        submitError instanceof Error
+          ? submitError.message
+          : 'Unable to send your request right now.',
+      )
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
-    <form
-      onSubmit={submit}
-      className="tavero-surface-light p-5 sm:p-7"
-    >
+    <form onSubmit={submit} className="tavero-surface-light p-5 sm:p-7">
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
           <span className="mb-2 block text-xs font-black text-[#5d4639]">Cafe name</span>
@@ -102,22 +132,29 @@ export function EarlyAccessForm() {
           role="status"
         >
           <CheckCircle2 size={19} className="mt-0.5 shrink-0" />
-          <p>
-            Thanks — Tavero early access request captured locally for demo. Connect a backend lead
-            form before public launch.
-          </p>
+          <p>Thanks — Tavero received your early access request.</p>
         </div>
+      )}
+
+      {error && (
+        <p
+          className="mt-4 rounded-2xl border border-rose-500/20 bg-rose-500/10 p-4 text-sm leading-6 text-rose-800"
+          role="alert"
+        >
+          {error}
+        </p>
       )}
 
       <button
         type="submit"
-        className="tavero-button-dark tavero-cta-shine mt-5 min-h-14 w-full"
+        disabled={submitting}
+        className="tavero-button-dark tavero-cta-shine mt-5 min-h-14 w-full disabled:cursor-not-allowed disabled:opacity-60"
       >
-        Request Early Access
-        <Send size={17} />
+        {submitting ? 'Sending request…' : 'Request Early Access'}
+        {submitting ? <Loader2 size={17} className="animate-spin" /> : <Send size={17} />}
       </button>
       <p className="mt-3 text-center text-[11px] leading-5 text-[#7c685b]">
-        Demo-only local form. No information is sent or stored yet.
+        We’ll review your request and reach out before listing your cafe.
       </p>
     </form>
   )
